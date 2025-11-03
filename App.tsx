@@ -31,20 +31,20 @@ const AppContent: React.FC = () => {
   };
 
   return (
-    <main className="min-h-screen">
-      {user && (
+    <main className="min-h-[100dvh] bg-slate-100">
+      {/* {user && (
          <header className="bg-brand-surface/80 backdrop-blur-lg border-b border-brand-border sticky top-0 z-50">
            <nav className="container mx-auto px-4 py-3 flex justify-between items-center">
              <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-brand-secondary">Eprep</div>
              <div>
-               <span className="mr-4 text-gray-300">Hello, {user.fullName || user.email}</span> {/* Use user.fullName if available, otherwise email */}
+               <span className="mr-4 text-gray-300">Hello, {user.fullName || user.email}</span> 
                <button onClick={handleLogout} className="px-4 py-2 text-sm font-medium rounded-md bg-brand-surface border border-brand-border hover:bg-white/10">
                  Logout
                </button>
              </div>
            </nav>
          </header>
-      )}
+      )} */}
       
       <Routes>
         {/* Public route for authentication */}
