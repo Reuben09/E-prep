@@ -114,7 +114,7 @@ const AuthPage: React.FC = () => {
             <SchoolOutlinedIcon fontSize='large' className="mx-auto h-[40px] w-[40px] text-white" />
           </div>
           <h2 className="mt-4 text-3xl font-bold bg-clip-text text-black">
-            Eprep Login
+            Eprep
           </h2>
           {/* <p className="mt-2 text-gray-400">Sign in or create an account to continue your journey</p> */}
         </div>
@@ -138,7 +138,7 @@ const AuthPage: React.FC = () => {
         </div>
 
         {activeTab === 'signin' && (
-          <form className="space-y-6" onSubmit={handleSignIn}>
+          <form className="space-y-6 text-black" onSubmit={handleSignIn}>
             <div>
               <label htmlFor="signin-email" className="block text-sm font-medium text-slate-500">Email</label>
               <input
@@ -179,7 +179,7 @@ const AuthPage: React.FC = () => {
         )}
 
         {activeTab === 'signup' && (
-          <form className="space-y-6" onSubmit={handleSignUp}>
+          <form className="space-y-6 text-black" onSubmit={handleSignUp}>
             <div>
               <label htmlFor="signup-fullname" className="block text-sm font-medium text-slate-500">Full Name</label>
               <input
