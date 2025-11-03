@@ -13,14 +13,14 @@ interface QuizResultsProps {
 }
 
 const RecommendationCard: React.FC<{ rec: StudyRecommendation }> = ({ rec }) => (
-    <a href={rec.url} target="_blank" rel="noopener noreferrer" className="block p-4 bg-brand-surface hover:bg-white/5 border border-brand-border rounded-lg transition-all">
+    <a href={rec.url} target="_blank" rel="noopener noreferrer" className="hover:bg-[#0099FF] block p-4 hover:bg-transparent border-[#0099FF] text-black border border-[#0099FF] hover:text-white rounded-lg transition-all">
         <div className="flex items-center gap-4">
             <div className="text-2xl">
                 {rec.type === 'youtube' ? '📺' : '📚'}
             </div>
             <div>
                 <p className="font-semibold">{rec.title}</p>
-                <p className="text-sm text-brand-secondary">{rec.type.charAt(0).toUpperCase() + rec.type.slice(1)}</p>
+                <p className="text-sm underline">{rec.type.charAt(0).toUpperCase() + rec.type.slice(1)}</p>
             </div>
         </div>
     </a>
@@ -59,10 +59,10 @@ const QuizResults: React.FC<QuizResultsProps> = ({ quiz, result, onRestart, onNe
 
     return (
         <div className="w-full max-w-4xl mx-auto space-y-6">
-            <Card className="p-8 text-center">
-                <h2 className="text-4xl font-bold mb-2">Quiz Complete!</h2>
+            <Card className="p-8 text-center bg-white">
+                <h2 className="text-4xl font-bold mb-2 text-[#0099FF]">Quiz Complete!</h2>
                 <p className="text-gray-400 mb-6">Here's how you did on {quiz.settings.selectedSubject}.</p>
-                <div className="text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-brand-secondary mb-4">
+                <div className="text-7xl font-bold bg-clip-text text-[#0099FF] bg-gradient-to-r from-brand-primary to-brand-secondary mb-4">
                     {result.score}%
                 </div>
                  <div className="flex justify-center gap-4 mt-8">
@@ -72,12 +72,12 @@ const QuizResults: React.FC<QuizResultsProps> = ({ quiz, result, onRestart, onNe
             </Card>
 
             {recommendations.length > 0 && (
-                <Card className="p-6">
-                    <h3 className="text-2xl font-bold mb-4">Study Recommendations for <span className="text-brand-primary">{weakestTopic?.topicName}</span></h3>
+                <Card className="p-6 bg-white">
+                    <h3 className="text-2xl font-bold mb-4 text-black">Study Recommendations for <span className="text-brand-primary">{weakestTopic?.topicName}</span></h3>
                     {isLoadingRecs ? (
                         <div className="space-y-3">
-                            <div className="w-full h-16 bg-brand-surface rounded-lg animate-pulse"></div>
-                            <div className="w-full h-16 bg-brand-surface rounded-lg animate-pulse"></div>
+                            <div className="w-full h-16 bg-[#0099FF] rounded-lg animate-pulse"></div>
+                            <div className="w-full h-16 bg-[#0099FF] rounded-lg animate-pulse"></div>
                         </div>
                     ) : (
                         <div className="space-y-3">
@@ -87,7 +87,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ quiz, result, onRestart, onNe
                 </Card>
             )}
 
-            <Card className="p-6">
+            <Card className="p-6 bg-white text-black">
                 <h3 className="text-2xl font-bold mb-4">Review Your Answers</h3>
                  <div className="space-y-6">
                     {quiz.questions.map((question, index) => {
