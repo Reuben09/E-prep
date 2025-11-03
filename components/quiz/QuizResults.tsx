@@ -61,7 +61,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ quiz, result, onRestart, onNe
         <div className="w-full max-w-4xl mx-auto space-y-6">
             <Card className="p-8 text-center">
                 <h2 className="text-4xl font-bold mb-2">Quiz Complete!</h2>
-                <p className="text-gray-400 mb-6">Here's how you did on {quiz.settings.topic.name}.</p>
+                <p className="text-gray-400 mb-6">Here's how you did on {quiz.settings.selectedSubject}.</p>
                 <div className="text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-brand-secondary mb-4">
                     {result.score}%
                 </div>

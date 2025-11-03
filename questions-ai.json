@@ -1,0 +1,125 @@
+{
+  "id": "c760f0df-06e2-47fa-aace-853d373f0ad4",
+  "questions": [
+    {
+      "id": "590b3a47-31b7-4f8a-9d89-f7b293a927b1",
+      "prompt": "Which of the following expressions is undefined?",
+      "choices": [
+        "5 + 0",
+        "5 - 0",
+        "5 × 0",
+        "5 ÷ 0"
+      ],
+      "answer": 3,
+      "explanation": "Division by zero is undefined in mathematics. Any number divided by zero results in an undefined value."
+    },
+    {
+      "id": "4ab55f4e-88d2-4459-ac16-188714011cec",
+      "prompt": "For what value of x is the expression 1/(x - 3) undefined?",
+      "choices": [
+        "x = 0",
+        "x = 1",
+        "x = 3",
+        "x = -3"
+      ],
+      "answer": 2,
+      "explanation": "The expression is undefined when the denominator is equal to zero. Setting x - 3 = 0 gives x = 3."
+    },
+    {
+      "id": "d80073fe-fd37-4aa6-b39c-c335db3014fc",
+      "prompt": "In the set of real numbers, which of these is undefined?",
+      "choices": [
+        "√4",
+        "√0",
+        "√(-4)",
+        "√9"
+      ],
+      "answer": 2,
+      "explanation": "In the set of real numbers, the square root of a negative number is undefined. The square root of -4 is not a real number."
+    },
+    {
+      "id": "88985c47-c5f3-4837-95e8-4a794deadc30",
+      "prompt": "Which trigonometric function is undefined at an angle of 90 degrees (π/2 radians)?",
+      "choices": [
+        "sin(90°)",
+        "cos(90°)",
+        "tan(90°)",
+        "cot(90°)"
+      ],
+      "answer": 2,
+      "explanation": "The tangent function is defined as sin(θ)/cos(θ). Since cos(90°) = 0, this leads to division by zero, which makes tan(90°) undefined."
+    },
+    {
+      "id": "bce28e88-2fa2-4bac-9e39-a2b7edbe6d11",
+      "prompt": "What makes the slope of a line undefined?",
+      "choices": [
+        "When the line passes through the origin",
+        "When the line is vertical",
+        "When the line is horizontal",
+        "When the line has a negative y-intercept"
+      ],
+      "answer": 1,
+      "explanation": "The slope of a line is calculated as 'rise over run'. For vertical lines, the run is 0, leading to division by zero, thus an undefined slope."
+    },
+    {
+      "id": "d16e4ddc-ce6c-4cb8-aab8-0f9830685794",
+      "prompt": "For which value of x is the expression log(x) (base 10) undefined in the set of real numbers?",
+      "choices": [
+        "x = 1",
+        "x = 0",
+        "x = -1",
+        "x = 10"
+      ],
+      "answer": 2,
+      "explanation": "The logarithm of zero or a negative number is undefined in the set of real numbers. So, log(0) is undefined."
+    },
+    {
+      "id": "511c174f-b060-43ed-a38c-c5c0c2208d08",
+      "prompt": "Consider the function f(x) = √(x - 2). For which value of x is f(x) undefined in the real number system?",
+      "choices": [
+        "x = 0",
+        "x = 1",
+        "x = 1.5",
+        "x = 2"
+      ],
+      "answer": 2,
+      "explanation": "For the square root function to be defined in real numbers, the value inside the square root must be non-negative. For x - 2 < 0 (i.e., x < 2), the function is undefined."
+    },
+    {
+      "id": "f2fe3064-44ee-4b58-99b9-939fe1ab7191",
+      "prompt": "Which of the following is an undefined form that occurs during certain limit evaluations in calculus?",
+      "choices": [
+        "1/1",
+        "0 × 0",
+        "0/0",
+        "1/0"
+      ],
+      "answer": 2,
+      "explanation": "0/0 is an indeterminate form, which is a type of undefined expression that requires further analysis using L'Hôpital's Rule or other limit evaluation techniques."
+    },
+    {
+      "id": "59cd31be-602d-4a76-b89c-80f58457b94d",
+      "prompt": "What makes the reciprocal of zero (1/0) undefined?",
+      "choices": [
+        "Because 1 ÷ 0 equals 1",
+        "Because 1 ÷ 0 equals infinity",
+        "Because division by zero has no meaning",
+        "Because 1 ÷ 0 equals zero"
+      ],
+      "answer": 2,
+      "explanation": "Division by zero has no mathematical meaning because no number multiplied by zero gives a non-zero result. Therefore, 1/0 is undefined."
+    },
+    {
+      "id": "bb29eb12-fa6b-41dc-81e3-50fe05bd9919",
+      "prompt": "If a mathematical operation is performed that does not produce a real number, the result is typically considered:",
+      "choices": [
+        "Valid",
+        "Infinite",
+        "Undefined",
+        "Negative"
+      ],
+      "answer": 2,
+      "explanation": "When an operation does not result in a specific, finite real number (such as division by zero or taking the square root of negative numbers), the result is generally termed 'undefined'."
+    }
+  ]
+}

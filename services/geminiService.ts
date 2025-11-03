@@ -7,7 +7,6 @@ import { Question, StudyRecommendation, Topic } from "../types";
 // Remove custom ImportMetaEnv and ImportMeta interfaces; use Vite's type augmentation instead.
 
 const API_KEY = import.meta.env.VITE_MY_API_KEY;
-console.log("Gemini API Key:", API_KEY)
 
 if (!API_KEY) {
   console.warn("Gemini API key not found. Using mock data. Please set the API_KEY environment variable.");
@@ -48,6 +47,7 @@ const recommendationSchema = {
 
 
 export const generateQuizQuestionsFromTopic = async (topic: Topic, numQuestions: number): Promise<Partial<Question>[]> => {
+    console.log(topic, 'topic');
     if (!API_KEY) {
         // Mock response if API key is not available
         console.log("Using mock questions for topic:", topic.name);

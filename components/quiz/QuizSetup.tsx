@@ -5,6 +5,7 @@ import Card from '../ui/Card';
 import Button from '../ui/Button';
 import BrainCircuitIcon from '../icons/BrainCircuitIcon';
 import BookOpenIcon from '../icons/BookOpenIcon';
+import { v4 as uuidv4 } from 'uuid';
 
 interface QuizSetupProps {
   onStartQuiz: (settings: QuizSettings) => void;
@@ -16,6 +17,15 @@ const QuizSetup: React.FC<QuizSetupProps> = ({ onStartQuiz }) => {
   const [selectedTopic, setSelectedTopic] = useState<string>('');
   const [numQuestions, setNumQuestions] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const quizId = uuidv4();
+
+  const [selectedExamType, setSelectedExamType] = useState<string>('');
+  const [selectedSubject, setSelectedSubject] = useState<string>('');
+  const [selectedYear, setSelectedYear] = useState<string>('');
+
+   const examTypes = ['WAEC', 'NECO', 'utme'];
+  const subjects = ['math', 'Physics', 'Chemistry', 'Biology', 'History'];
+  const years = ['2023', '2022', '2021', '2020', '2019'];
 
   useEffect(() => {
     const loadTopics = async () => {
@@ -26,15 +36,21 @@ const QuizSetup: React.FC<QuizSetupProps> = ({ onStartQuiz }) => {
         setSelectedTopic(fetchedTopics[0].id);
       }
       setIsLoading(false);
-    };
+    }
     loadTopics();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const topic = topics.find(t => t.id === selectedTopic);
+    if(mode === QuizMode.PAST_QUESTIONS){
+       onStartQuiz({ id: quizId, selectedExamType, selectedSubject, selectedYear, mode, numQuestions } as any);
+      // Additional handling for past questions can be added here
+      console.log(`Selected Exam Type: ${selectedExamType}, Subject: ${selectedSubject}, Year: ${selectedYear}`);
+    }else{
+       const topic = topics.find(t => t.id === selectedTopic);
     if (topic) {
       onStartQuiz({ mode, topic, numQuestions });
+    }
     }
   };
 
@@ -78,9 +94,59 @@ const QuizSetup: React.FC<QuizSetupProps> = ({ onStartQuiz }) => {
             </ModeButton>
           </div>
         </div>
+        {
+          mode==="Past Questions"?
+          (
+          <div className="space-y-4"> {/* Added space-y-4 for vertical spacing between selects */}
+            <div>
+              <label htmlFor="examType" className="block text-lg font-semibold mb-3">2. Choose an Exam Type</label>
+              <select
+                id="examType"
+                value={selectedExamType}
+                onChange={(e) => setSelectedExamType(e.target.value)}
+                className="w-full p-3 bg-brand-surface border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-brand-primary outline-none"
+              >
+                <option value="" disabled>Select Exam Type</option> {/* Added a disabled default option */}
+                {examTypes.map((type) => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
+              </select>
+            </div>
 
-        <div>
-          <label htmlFor="topic" className="block text-lg font-semibold mb-3">2. Choose a Topic</label>
+            <div>
+              <label htmlFor="subject" className="block text-lg font-semibold mb-3">3. Choose a Subject</label>
+              <select
+                id="subject"
+                value={selectedSubject}
+                onChange={(e) => setSelectedSubject(e.target.value)}
+                className="w-full p-3 bg-brand-surface border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-brand-primary outline-none"
+              >
+                <option value="" disabled>Select Subject</option> {/* Added a disabled default option */}
+                {subjects.map((subject) => (
+                  <option key={subject} value={subject}>{subject}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="year" className="block text-lg font-semibold mb-3">4. Choose a Year</label>
+              <select
+                id="year"
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}
+                className="w-full p-3 bg-brand-surface border border-brand-border rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-brand-primary outline-none"
+              >
+                <option value="" disabled>Select Year</option> {/* Added a disabled default option */}
+                {years.map((year) => (
+                  <option key={year} value={year}>{year}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        ) :
+
+         <div>
+          <label htmlFor="topic" className="block text-lg font-semibold mb-3">2. Choose a Subject</label>
           {isLoading ? (
             <div className="w-full h-12 bg-brand-surface rounded-lg animate-pulse"></div>
           ) : (
@@ -96,6 +162,7 @@ const QuizSetup: React.FC<QuizSetupProps> = ({ onStartQuiz }) => {
             </select>
           )}
         </div>
+        }
 
         <div>
           <label htmlFor="numQuestions" className="block text-lg font-semibold mb-3">3. Number of Questions: <span className="text-brand-primary font-bold">{numQuestions}</span></label>

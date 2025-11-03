@@ -1,13 +1,19 @@
 
 import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import QuizSetup from '../components/quiz/QuizSetup';
 import QuizPlayer from '../components/quiz/QuizPlayer';
 import QuizResults from '../components/quiz/QuizResults';
 import { Quiz, QuizSettings, UserAnswer, QuizResult, QuizMode, Question } from '../types';
 import { fetchPastQuestions } from '../services/apiService';
+import { transformQuestions } from '@/helper/transformQuestions';
 import { generateQuizQuestionsFromTopic } from '../services/geminiService';
+import aiQuestions from '../questions-ai.json';
+import pstQuestions from '../questions.json';
 import LoaderIcon from '../components/icons/LoaderIcon';
+import { fetchAlocQuestions } from '../services/alocApiService';
+import { supabase } from '../integrations/supabase/client';
 
 type QuizFlowState = 'setup' | 'loading' | 'playing' | 'results';
 
@@ -20,17 +26,33 @@ const QuizFlowPage: React.FC<QuizFlowPageProps> = ({ onBackToDashboard }) => {
   const [currentQuiz, setCurrentQuiz] = useState<Quiz | null>(null);
   const [quizResult, setQuizResult] = useState<QuizResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleStartQuiz = useCallback(async (settings: QuizSettings) => {
+    console.log(aiQuestions);;
     setFlowState('loading');
     setError(null);
     try {
       let questions: Question[] = [];
       if (settings.mode === QuizMode.PAST_QUESTIONS) {
-        questions = await fetchPastQuestions(settings.topic.id, settings.numQuestions);
+        console.log(settings, 'settings in past questions');
+        // questions = await fetchPastQuestions(settings.topic.id, settings.numQuestions);
+              const fetchedQuestions = await fetchAlocQuestions({
+          subject: settings.selectedSubject,
+          year: parseInt(settings.selectedYear, 10),
+          type: settings.selectedExamType.toLowerCase()
+        });
+        console.log(fetchedQuestions, 'fetchedQuestions');
+  const transformed = transformQuestions(fetchedQuestions);
+  console.log(transformed, 'transformed');
+  questions = transformed.questions.map(q => ({
+    ...q,
+    topicId: settings.id
+  }));
+
       } else {
-        const generatedQuestions = await generateQuizQuestionsFromTopic(settings.topic, settings.numQuestions);
-        questions = generatedQuestions.map(q => ({
+        // const generatedQuestions = await generateQuizQuestionsFromTopic(settings.topic, settings.numQuestions);
+        questions = aiQuestions.questions.map(q => ({
             ...q,
             id: uuidv4(),
             topicId: settings.topic.id
@@ -57,25 +79,55 @@ const QuizFlowPage: React.FC<QuizFlowPageProps> = ({ onBackToDashboard }) => {
     }
   }, []);
 
-  const handleSubmitQuiz = useCallback((answers: UserAnswer[]) => {
-    if (!currentQuiz) return;
-    
-    const correctAnswers = answers.filter(a => a.isCorrect).length;
-    const score = Math.round((correctAnswers / currentQuiz.questions.length) * 100);
+ const handleSubmitQuiz = useCallback(async (answers: UserAnswer[]) => {
+  if (!currentQuiz) return;
 
-    const result: QuizResult = {
-        score,
-        answers,
-        topicPerformance: [{ 
-            topicName: currentQuiz.settings.topic.name, 
-            correct: correctAnswers, 
-            total: currentQuiz.questions.length 
-        }]
-    };
-    
-    setQuizResult(result);
+  const correctAnswers = answers.filter(a => a.isCorrect).length;
+  const score = Math.round((correctAnswers / currentQuiz.questions.length) * 100);
+
+  const result: QuizResult = {
+    score,
+    answers,
+    topicPerformance: [{
+      topicName: currentQuiz.settings.selectedSubject,
+      correct: correctAnswers,
+      total: currentQuiz.questions.length
+    }]
+  };
+
+  setQuizResult(result);
+
+  try {
+     const user = (await supabase.auth.getUser()).data.user;
+
+    // 🧩 Create a new quiz record (INSERT instead of UPDATE)
+    const { data, error } = await supabase
+      .from('quizzes')
+      .insert({
+        user_id: user?.id,
+        mode: 'ai_generated',
+        subject: currentQuiz.settings.topic.name,
+        exam: "neco",
+        score: score,
+        question_ids:[],
+        total_questions: currentQuiz.questions.length,
+        completed: true,
+        time_limit_seconds: currentQuiz.settings.numQuestions,
+        created_at: new Date().toISOString(),
+        completed_at: new Date().toISOString()
+      })
+      .select();
+
+    if (error) throw error;
+
+    console.log('✅ Quiz inserted:', data);
+    // Insert the quiz result
+
     setFlowState('results');
-  }, [currentQuiz]);
+  } catch (err) {
+    console.error('Error submitting quiz:', err);
+  }
+}, [currentQuiz]);
 
   const handleRestart = useCallback(() => {
     if (currentQuiz) {
@@ -89,6 +141,9 @@ const QuizFlowPage: React.FC<QuizFlowPageProps> = ({ onBackToDashboard }) => {
     setFlowState('setup');
   }, []);
 
+  const handleBackToDashboard = ()=>{
+    navigate('/');
+  }
 
   const renderContent = () => {
     switch (flowState) {
@@ -113,7 +168,7 @@ const QuizFlowPage: React.FC<QuizFlowPageProps> = ({ onBackToDashboard }) => {
   return (
     <div className="container mx-auto px-4 py-8">
       {flowState !== 'setup' && (
-         <button onClick={onBackToDashboard} className="mb-6 text-brand-secondary hover:text-brand-primary transition-colors">
+         <button onClick={handleBackToDashboard} className="mb-6 text-brand-secondary hover:text-brand-primary transition-colors">
             &larr; Back to Dashboard
          </button>
       )}

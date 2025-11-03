@@ -65,7 +65,11 @@ const QuizPlayer: React.FC<QuizPlayerProps> = ({ quiz, onSubmit }) => {
         <div className="flex justify-between items-center mb-6">
             <div>
                 <span className="text-brand-secondary">{quiz.settings.mode}</span>
-                <h2 className="text-2xl font-bold">{quiz.settings.topic.name}</h2>
+                {
+                  quiz.settings.mode === "Past Questions" ? 
+                  <h2 className="text-2xl font-bold">{quiz.settings?.selectedSubject}</h2>:
+                  <h2 className="text-2xl font-bold">{quiz.settings.topic.name}</h2>
+                }
             </div>
             <div className="text-right">
                 <div className="text-lg font-semibold text-brand-primary">{formatTime(timeLeft)}</div>

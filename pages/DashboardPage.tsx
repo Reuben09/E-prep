@@ -1,13 +1,10 @@
 
-import React from 'react';
-import { User } from '../types';
+import React, {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-
-interface DashboardPageProps {
-  user: User;
-  onStartQuiz: () => void;
-}
+import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 const StatCard: React.FC<{ value: string | number; label: string; icon: string }> = ({ value, label, icon }) => (
     <Card className="p-6 flex-1">
@@ -21,26 +18,89 @@ const StatCard: React.FC<{ value: string | number; label: string; icon: string }
     </Card>
 );
 
-const DashboardPage: React.FC<DashboardPageProps> = ({ user, onStartQuiz }) => {
+const DashboardPage = () => {
+  const { user, signOut } = useAuth();
+  const [profile, setProfile] = useState<any>(null);
+  const navigate = useNavigate();
+  const [stats, setStats] = useState({
+    totalQuizzes: 0,
+    averageScore: 0,
+    streak: 0,
+    badges: []
+  });
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+
+    loadProfile();
+    loadStats();
+  }, [user]);
+
+  const loadProfile = async () => {
+    if (!user) return;
+
+    const { data } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+
+    if (data) {
+      setProfile(data);
+      setStats(prev => ({
+        ...prev,
+        streak: data.streak_days || 0,
+        badges: Array.isArray(data.badges) ? data.badges : []
+      }));
+    }
+  };
+
+  const loadStats = async () => {
+    if (!user) return;
+
+    // Load quiz statistics
+    const { data: quizzes } = await supabase
+      .from('quizzes')
+      .select('score, completed')
+      .eq('user_id', user.id)
+      .eq('completed', true);
+
+    if (quizzes && quizzes.length > 0) {
+      const totalScore = quizzes.reduce((sum, quiz) => sum + (quiz.score || 0), 0);
+      setStats(prev => ({
+        ...prev,
+        totalQuizzes: quizzes.length,
+        averageScore: Math.round(totalScore / quizzes.length)
+      }));
+    }
+  };
+
+    const handleStartQuizClick = () => {
+    navigate('/quiz'); // Use navigate to go to the quiz page
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
       <div>
-        <h1 className="text-4xl font-bold">Welcome back, <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-brand-secondary">{user.name}</span>!</h1>
+        <h1 className="text-4xl font-bold">Welcome back, <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-brand-secondary">{profile?.full_name}</span>!</h1>
         <p className="text-gray-400 text-lg mt-1">Ready to conquer your exams? Let's get started.</p>
       </div>
 
       <Card className="p-8 text-center bg-gradient-to-br from-brand-surface to-transparent">
         <h2 className="text-3xl font-bold mb-4">Start a New Quiz</h2>
         <p className="text-gray-300 max-w-2xl mx-auto mb-6">Challenge yourself with past questions or let our AI create a custom quiz just for you.</p>
-        <Button onClick={onStartQuiz} className="!px-10 !py-4 text-xl">
+        <Button onClick={handleStartQuizClick} className="!px-10 !py-4 text-xl">
             Let's Go!
         </Button>
       </Card>
 
       <div className="grid md:grid-cols-3 gap-6">
-        <StatCard value={user.streak} label="Day Streak" icon="🔥" />
-        <StatCard value="78%" label="Avg. Score" icon="🎯" />
-        <StatCard value={user.badges.length} label="Badges Earned" icon="🏆" />
+        <StatCard value={stats?.streak} label="Day Streak" icon="🔥" />
+        <StatCard value={stats?.averageScore} label="Avg. Score" icon="🎯" />
+        <StatCard value={stats?.badges?.length} label="Badges Earned" icon="🏆" />
       </div>
 
        <Card className="p-6">

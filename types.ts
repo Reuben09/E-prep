@@ -28,8 +28,16 @@ export interface Question {
 
 export interface QuizSettings {
   mode: QuizMode;
-  topic: Topic;
   numQuestions: number;
+  examType?: string;
+  examSubject?: string;
+  examYear?: string;
+  topicId?: string;
+  topicName?: string;
+  topic?: string;
+  selectedExamType?: string;
+  selectedSubject?: string;
+  selectedYear?: string;
 }
 
 export interface UserAnswer {
