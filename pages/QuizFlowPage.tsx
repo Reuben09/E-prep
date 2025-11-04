@@ -82,7 +82,7 @@ const QuizFlowPage: React.FC<QuizFlowPageProps> = ({ onBackToDashboard }) => {
 
  const handleSubmitQuiz = useCallback(async (answers: UserAnswer[]) => {
   if (!currentQuiz) return;
-
+   console.log(currentQuiz, 'currentQuiz on submit');
   const correctAnswers = answers.filter(a => a.isCorrect).length;
   const score = Math.round((correctAnswers / currentQuiz.questions.length) * 100);
 
@@ -107,7 +107,7 @@ const QuizFlowPage: React.FC<QuizFlowPageProps> = ({ onBackToDashboard }) => {
       .insert({
         user_id: user?.id,
         mode: 'ai_generated',
-        subject: currentQuiz.settings.topic.name,
+        subject: currentQuiz.settings.selectedSubject,
         exam: "neco",
         score: score,
         question_ids:[],
