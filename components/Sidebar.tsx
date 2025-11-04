@@ -28,7 +28,7 @@ const Sidebar = ({ screen }) => {
                     </Link>
 
                     <Link
-                        to={""}
+                        to={"/quiz"}
                         className=' mb-[10px] block'
                     >
                         <div className={`${screen === "quiz" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><QuizRoundedIcon className=' mr-[5px]'/>Quizzes</div>

@@ -2,6 +2,7 @@
 export enum QuizMode {
   PAST_QUESTIONS = 'Past Questions',
   AI_GENERATED = 'AI-Generated',
+  PDF_UPLOAD = "Upload"
 }
 
 export interface User {

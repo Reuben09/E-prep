@@ -51,8 +51,9 @@ const QuizFlowPage: React.FC<QuizFlowPageProps> = ({ onBackToDashboard }) => {
   }));
 
       } else {
-        // const generatedQuestions = await generateQuizQuestionsFromTopic(settings.topic, settings.numQuestions);
-        questions = aiQuestions.questions.map(q => ({
+        const generatedQuestions = await generateQuizQuestionsFromTopic(settings.topic, settings.numQuestions);
+        console.log(generatedQuestions, 'generatedQuestions from gemini');
+        questions = generatedQuestions?.map(q => ({
             ...q,
             id: uuidv4(),
             topicId: settings.topic.id
