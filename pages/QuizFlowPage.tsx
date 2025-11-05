@@ -97,7 +97,9 @@ const QuizFlowPage: React.FC<QuizFlowPageProps> = ({ onBackToDashboard }) => {
   };
 
   setQuizResult(result);
-
+  let subject = currentQuiz.settings.mode === "Past Questions" ? currentQuiz.settings.selectedSubject : currentQuiz.settings.topic.name;
+ console.log(currentQuiz);
+  console.log(subject, 'subject');
   try {
      const user = (await supabase.auth.getUser()).data.user;
 
@@ -107,7 +109,7 @@ const QuizFlowPage: React.FC<QuizFlowPageProps> = ({ onBackToDashboard }) => {
       .insert({
         user_id: user?.id,
         mode: 'ai_generated',
-        subject: currentQuiz.settings.selectedSubject,
+        subject: subject,
         exam: "neco",
         score: score,
         question_ids:[],
