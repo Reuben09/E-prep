@@ -6,9 +6,10 @@ import Button from '../components/ui/Button';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import Sidebar from '@/components/Sidebar';
+import Typewriter from '@/components/Typewriter';
 
 const StatCard: React.FC<{ value: string | number; label: string; icon: string }> = ({ value, label, icon }) => (
-  <Card className="p-6 flex-1 bg-white">
+  <Card className="p-6 flex-1 bg-white max-sm:w-[95vw]">
     <div className="flex items-center gap-4">
       <div className="text-4xl">{icon}</div>
       <div>
@@ -84,16 +85,40 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className='bg-slate-100'>
+    <div className=' bg-slate-100'>
       <Sidebar screen={"dashboard"} />
-      <div className="bg-slate-100 mx-auto px-4 py-8 space-y-8 pl-[15vw]">
-        <div className=' w-full px-[20px] border-b border-b-slate-300'>
-          <h1 className="text-4xl font-bold text-black">Welcome back, <span className="bg-clip-text text-black bg-gradient-to-r from-brand-primary to-brand-secondary">{profile?.full_name}</span>!</h1>
-          <p className="text-gray-400 text-lg mt-1">Let's get some practice in today.</p>
+      <div className="max-sm:pt-[90px] bg-slate-100 mx-auto lg:px-4 py-8 space-y-8 lg:pl-[15vw]">
+        <div className=' w-full lg:px-[20px] border-b border-b-slate-300'>
+          <h1 className="text-4xl font-bold text-black max-sm:mx-2">Welcome back, <span className="bg-clip-text max-sm:hidden text-black bg-gradient-to-r from-brand-primary to-brand-secondary">
+            <Typewriter
+              texts={[
+                `${profile?.full_name}`,
+                `${profile?.full_name}`,
+              ]}
+              typingSpeed={100}
+              deletingSpeed={50}
+              pauseTime={2000}
+            />
+          </span>
+            <span className="bg-clip-text lg:hidden text-black bg-gradient-to-r from-brand-primary to-brand-secondary">
+              {profile?.full_name}
+            </span>
+            !</h1>
+          <p className="text-gray-400 text-lg mt-1 max-sm:mx-2 max-sm:hidden">Let's get some practice in today.</p>
+          <p className="text-gray-400 text-lg mt-1 max-sm:mx-2 lg:hidden">
+            <Typewriter
+              texts={[
+                `Let's get some practice in today.`,
+              ]}
+              typingSpeed={100}
+              deletingSpeed={50}
+              pauseTime={2000}
+            />
+          </p>
         </div>
 
-        <div className=' w-full flex items-start justify-between px-[20px]'>
-          <div className=' w-[55%] h-full flex flex-col items-center justify-start bg-transparent rounded-2xl'>
+        <div className=' w-full flex flex-col lg:flex-row items-center lg:items-start justify-start lg:justify-between lg:px-[20px]'>
+          <div className=' w-[95%] lg:w-[55%] h-full flex flex-col items-center justify-start bg-transparent rounded-2xl mb-[20px]'>
             <Card className="p-8 text-center bg-white mb-[20px]">
               <h2 className="text-3xl font-bold mb-4 text-black">Start a New Quiz</h2>
               <p className="text-gray-400 max-w-2xl mx-auto mb-6">Challenge yourself with past questions or let our AI create a custom quiz just for you.</p>
@@ -109,7 +134,7 @@ const DashboardPage = () => {
             </div>
           </div>
 
-          <div className=' w-[40%] h-full flex items-start justify-center bg-white rounded-2xl'>
+          <div className=' w-[95%] lg:w-[40%] h-full flex items-start justify-center bg-white rounded-2xl'>
             <Card className="p-6 w-full bg-transparent">
               <h3 className="text-2xl font-bold mb-4 text-black">Your Recent Activity</h3>
               <ul className="space-y-4">
