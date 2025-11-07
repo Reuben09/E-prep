@@ -723,7 +723,7 @@ const QuizSetup: React.FC<QuizSetupProps> = ({ onStartQuiz }) => {
           )}
 
           {/* Number of Questions slider - now for all modes */}
-          <div>
+          <div className={`${mode === QuizMode.PAST_QUESTIONS && "hidden"}`}>
             <label htmlFor="numQuestions" className="block text-lg font-semibold mb-3 text-black">Number of Questions: <span className="text-[#0099FF] font-bold">{numQuestions}</span></label>
             <input
               type="range"
