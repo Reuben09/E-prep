@@ -68,7 +68,7 @@ const QuizPlayer: React.FC<QuizPlayerProps> = ({ quiz, onSubmit }) => {
                 {
                   quiz.settings.mode === "Past Questions" ? 
                   <h2 className="text-2xl font-bold text-black">{quiz.settings?.selectedSubject}</h2>:
-                  <h2 className="text-2xl font-bold text-black">{quiz.settings.topic.name}</h2>
+                  <h2 className="text-2xl font-bold text-black"></h2>
                 }
             </div>
             <div className="text-right">
