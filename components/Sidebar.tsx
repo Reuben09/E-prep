@@ -41,12 +41,12 @@ const Sidebar = ({ screen }) => {
                         <div className={`${screen === "progress" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><BarChartRoundedIcon className=' mr-[5px]'/>Progress</div>
                     </Link>
 
-                    <Link
-                        to={""}
+                    <a
+                        href={"/chatbot/index.html"}
                         className=' mb-[10px] block'
                     >
                         <div className={`${screen === "progress" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><AutoAwesomeIcon className=' mr-[5px]'/>AI Tutor</div>
-                    </Link>
+                    </a>
                 </div>
             </div>
             <button onClick={handleLogout} className=' flex items-center justify-start text-slate-400 px-[10px] text-md text-black border-t-slate-300 border-t py-2 w-full'><LogoutIcon fontSize='small' className=' text-slate-400 mr-[5px]' /> Logout</button>
