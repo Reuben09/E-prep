@@ -43,18 +43,18 @@ const Sidebar = ({ screen }) => {
                             <div className={`${screen === "quiz" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><QuizRoundedIcon className=' mr-[5px]' />Quizzes</div>
                         </Link>
 
-                        <Link
+                        {/* <Link
                             to={""}
                             className=' mb-[10px] block'
                         >
                             <div className={`${screen === "progress" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><BarChartRoundedIcon className=' mr-[5px]' />Progress</div>
-                        </Link>
+                        </Link> */}
 
                         <a
                             href={"/chatbot/index.html"}
                             className=' mb-[10px] block'
                         >
-                            <div className={`${screen === "progress" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><AutoAwesomeIcon className=' mr-[5px]' />AI Tutor</div>
+                            <div className={`${screen === "chatbot" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><AutoAwesomeIcon className=' mr-[5px]' />AI Tutor</div>
                         </a>
                     </div>
                 </div>
@@ -150,14 +150,14 @@ const Sidebar = ({ screen }) => {
                                         <QuizRoundedIcon className=' mr-[5px]' />Quizzes
                                         {/* <span className="absolute left-1/2 bottom-0 w-0 h-[1px] bg-[#0099FF] transition-all duration-300 group-hover:w-full group-hover:left-0"></span> */}
                                     </Link>
-                                    <Link
+                                    {/* <Link
                                         to="/#services"
                                         className="relative group text-[#0099FF] hover:text-[#0099FF]/40 duration-500 block w-fit mb-4 text-3xl"
                                         onClick={toggleSidebar}
                                     >
                                         <BarChartRoundedIcon className=' mr-[5px]' />Progress
-                                        {/* <span className="absolute left-1/2 bottom-0 w-0 h-[1px] bg-[#0099FF] transition-all duration-300 group-hover:w-full group-hover:left-0"></span> */}
-                                    </Link>
+                                        
+                                    </Link> */}
                                     <a
                                         href="/chatbot/index.html"
                                         className="relative group text-[#0099FF] hover:text-[#0099FF]/40 duration-500 block w-fit mb-4 text-3xl"

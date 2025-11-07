@@ -398,7 +398,7 @@ const QuizFlowPage: React.FC<QuizFlowPageProps> = ({ onBackToDashboard }) => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className=" ">
       {flowState !== 'setup' && (
         <button onClick={handleBackToDashboard} className="mb-6 text-[#0099FF] hover:text-[#0099FF]/60 transition-colors">
           &larr; Back to Dashboard
