@@ -150,6 +150,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import Sidebar from '@/components/Sidebar';
 import Typewriter from '@/components/Typewriter';
+import { FadeInFromLeft } from '@/components/FadeInFromLeft';
+import { FadeInFromBottom } from '@/components/FadeInFromBottom';
+import InfiniteCarousel from '@/components/Carousel';
 
 const StatCard: React.FC<{ value: string | number; label: string; icon: string }> = ({ value, label, icon }) => (
   <Card className="p-6 flex-1 bg-white max-sm:w-[95vw]">
@@ -332,47 +335,60 @@ const DashboardPage = () => {
         </div>
 
         <div className=' w-full flex flex-col lg:flex-row items-center lg:items-start justify-start lg:justify-between lg:px-[20px]'>
-          <div className=' w-[95%] lg:w-[55%] h-full flex flex-col items-center justify-start bg-transparent rounded-2xl mb-[20px]'>
-            <Card className="p-8 text-center bg-white mb-[20px]">
-              <h2 className="text-3xl font-bold mb-4 text-black">Start a New Quiz</h2>
-              <p className="text-gray-400 max-w-2xl mx-auto mb-6">Challenge yourself with past questions or let our AI create a custom quiz just for you.</p>
-              <Button onClick={handleStartQuizClick} className="!px-10 !py-4 text-xl">
-                Let's Go!
-              </Button>
-            </Card>
+          <div className=' w-[95%] lg:w-[55%]'>
+            <FadeInFromLeft>
+              <div className=' w-full  h-full flex flex-col items-center justify-start bg-transparent rounded-2xl mb-[20px]'>
+                <Card className="p-8 text-center bg-white mb-[20px]">
+                  <h2 className="text-3xl font-bold mb-4 text-black">Start a New Quiz</h2>
+                  <p className="text-gray-400 max-w-2xl mx-auto mb-6">Challenge yourself with past questions or let our AI create a custom quiz just for you.</p>
+                  <Button onClick={handleStartQuizClick} className="!px-10 !py-4 text-xl">
+                    Let's Go!
+                  </Button>
+                </Card>
 
-            <div className="grid md:grid-cols-3 gap-6">
-              <StatCard value={stats?.streak} label="Day Streak" icon="🔥" />
-              <StatCard value={stats?.averageScore} label="Avg. Score" icon="🎯" />
-              <StatCard value={stats?.badges?.length} label="Badges Earned" icon="🏆" />
-            </div>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <StatCard value={stats?.streak} label="Day Streak" icon="🔥" />
+                  <StatCard value={stats?.averageScore} label="Avg. Score" icon="🎯" />
+                  <StatCard value={stats?.badges?.length} label="Badges Earned" icon="🏆" />
+                </div>
+              </div>
+            </FadeInFromLeft>
           </div>
 
-          <div className=' w-[95%] lg:w-[40%] h-full flex items-start justify-center bg-white rounded-2xl'>
-            <Card className="p-6 w-full bg-transparent">
-              <h3 className="text-2xl font-bold mb-4 text-black">Your Recent Activity</h3>
-              <ul className="space-y-4">
-                <li className="flex justify-between items-center p-4 bg-transparent rounded-lg">
-                  <div>
-                    <p className="font-semibold text-black">Quiz: Photosynthesis</p>
-                    <p className="text-sm text-gray-400">Completed 2 hours ago</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-bold text-green-400">Score: 85%</p>
-                  </div>
-                </li>
-                <li className="flex justify-between items-center p-4 bg-transparent rounded-lg">
-                  <div>
-                    <p className="font-semibold text-black">Quiz: Algebra</p>
-                    <p className="text-sm text-gray-400">Completed yesterday</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-bold text-yellow-400">Score: 60%</p>
-                  </div>
-                </li>
-              </ul>
-            </Card>
+          <div className=' w-[95%] lg:w-[55%]'>
+            <FadeInFromBottom>
+              <div className=' w-full h-full flex items-start justify-center bg-white rounded-2xl'>
+                <Card className="p-6 w-full bg-transparent">
+                  <h3 className="text-2xl font-bold mb-4 text-black">Your Recent Activity</h3>
+                  <ul className="space-y-4">
+                    <li className="flex justify-between items-center p-4 bg-transparent rounded-lg">
+                      <div>
+                        <p className="font-semibold text-black">Quiz: Photosynthesis</p>
+                        <p className="text-sm text-gray-400">Completed 2 hours ago</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-green-400">Score: 85%</p>
+                      </div>
+                    </li>
+                    <li className="flex justify-between items-center p-4 bg-transparent rounded-lg">
+                      <div>
+                        <p className="font-semibold text-black">Quiz: Algebra</p>
+                        <p className="text-sm text-gray-400">Completed yesterday</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-yellow-400">Score: 60%</p>
+                      </div>
+                    </li>
+                  </ul>
+                </Card>
+              </div>
+            </FadeInFromBottom>
           </div>
+
+        </div>
+
+        <div>
+          <InfiniteCarousel/>
         </div>
       </div>
     </div>
