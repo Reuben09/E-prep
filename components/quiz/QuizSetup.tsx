@@ -360,7 +360,7 @@ interface QuizSetupProps {
 }
 
 const quizData = {
-  "examTypes": ["WAEC", "NECO", "utme", "post-utme-aaua", "model"],
+  "examTypes": ["waec", "neco", "utme"],
   "subjects": {
     "English language": [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010],
     "Mathematics": [2006, 2007, 2008, 2009, 2013],
@@ -575,7 +575,7 @@ const QuizSetup: React.FC<QuizSetupProps> = ({ onStartQuiz }) => {
         return;
       }
       // When starting the quiz for PDF_UPLOAD, pass the pdfContentId
-      onStartQuiz({ id: quizId, mode, numQuestions, pdfContentId });
+      onStartQuiz({ id: quizId, mode, numQuestions, pdfContentId, pdfExtractedText });
     }
   };
 
@@ -635,7 +635,7 @@ const QuizSetup: React.FC<QuizSetupProps> = ({ onStartQuiz }) => {
               >
                 <option value="" disabled>Select Exam Type</option>
                 {quizData.examTypes.map((type) => (
-                  <option key={type} value={type}>{type}</option>
+                  <option key={type} value={type} className='uppercase'>{type}</option>
                 ))}
               </select>
             </div>

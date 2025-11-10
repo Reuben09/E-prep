@@ -14,12 +14,28 @@ const QuizPlayer: React.FC<QuizPlayerProps> = ({ quiz, onSubmit }) => {
   const [userAnswers, setUserAnswers] = useState<Map<string, number>>(new Map());
   const [timeLeft, setTimeLeft] = useState(quiz.questions.length * 60); // 60 seconds per question
 
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
+  //   }, 1000);
+  //   return () => clearInterval(timer);
+  // }, []);
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
+      setTimeLeft(prev => {
+        if (prev > 0) {
+          return prev - 1;
+        } else {
+          // Time has run out, automatically submit the quiz
+          handleSubmit(); // Call handleSubmit when time is 0
+          clearInterval(timer); // Stop the timer
+          return 0;
+        }
+      });
     }, 1000);
+
     return () => clearInterval(timer);
-  }, []);
+  }, [timeLeft]);
 
   const handleAnswerSelect = (choiceIndex: number) => {
     const newAnswers = new Map(userAnswers);
