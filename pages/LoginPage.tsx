@@ -15,6 +15,7 @@ const signUpSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  category: z.string().min(1, "Select a category"),
 });
 
 const signInSchema = z.object({
@@ -25,6 +26,7 @@ const signInSchema = z.object({
 const AuthPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signin');
   const [email, setEmail] = useState('');
+  const [category, setCategory] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState(''); // For signup
   const [isLoading, setIsLoading] = useState(false);
@@ -73,7 +75,7 @@ const AuthPage: React.FC = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    const data = { fullName, email, password };
+    const data = { fullName, email, password, category };
 
     try {
       const validation = signUpSchema.safeParse(data);
@@ -82,7 +84,7 @@ const AuthPage: React.FC = () => {
         return; // Exit if validation fails
       }
 
-      const { error } = await signUp(email, password, fullName);
+      const { error } = await signUp(email, password, fullName, category);
 
       if (error) {
         if (error.message.includes('already registered')) {
@@ -221,6 +223,27 @@ const AuthPage: React.FC = () => {
                 disabled={isLoading}
                 className="mt-1 block w-full px-3 py-2 bg-transparent border border-slate-500 rounded-md shadow-sm placeholder-gray-500 focus:outline-none focus:ring-[#0099FF] focus:border-[#0099FF] sm:text-sm"
               />
+            </div>
+            <div>
+              <label htmlFor="signup-category" className="block text-sm font-medium text-slate-500">Category</label>
+              <select value={category} required name="category" id="signin-category" onChange={(e) => setCategory(e.target.value)} disabled={isLoading} className="mt-1 block w-full px-3 py-2 bg-transparent border border-slate-500 rounded-md shadow-sm placeholder-gray-500 focus:outline-none focus:ring-[#0099FF] focus:border-[#0099FF] sm:text-sm">
+                <option value="">Enter your category</option>
+                <option value="Junior_Secondary_School">Junior Secondary School</option>
+                <option value="Senior_Secondary_School">Senior Secondary School</option>
+                <option value="University">University</option>
+              </select>
+              {/* <input
+                id="signin-category"
+                name="category"
+                type="category"
+                placeholder='Enter your password'
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
+                 className="mt-1 block w-full px-3 py-2 bg-transparent border border-slate-500 rounded-md shadow-sm placeholder-gray-500 focus:outline-none focus:ring-[#0099FF] focus:border-[#0099FF] sm:text-sm"
+              /> */}
             </div>
             <div>
               <Button type="submit" className="w-full" isLoading={isLoading}>
