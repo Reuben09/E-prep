@@ -6,6 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import CreateIcon from '@mui/icons-material/Create';
 
 const SettingsPage = () => {
     const { user, signOut } = useAuth();
@@ -70,8 +71,8 @@ const SettingsPage = () => {
                         <div className="flex flex-col items-center text-center pb-8 border-b border-slate-200 ">
                             <div className="relative mb-4">
                                 <img alt="User avatar" className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1Tx8Qt1LA-1QYYP09-gGRjtwh0YeVNCugVpTnm2gWylRp8XX00gVaOw6DarT5JGTdI5K7JU3M_9b3EGH4Uoe5Dpz17p76g0PlaGUl0Ca-QqmIXGONxI1JbD2e0hY_bMC15dF3pwJH0eFa1vhKlSdEwSCAmTbD3TXzLH-Wwx8XFhXzHJ-cpOSsWDizIBV0xCd1FevfgMiG-fbcjm9Fh_5MoSnXA_2Yuop1cxXkT_aSJJ9w4NOdmsqin0sWMTJZQZHQbNHLWK_o9e8" />
-                                <button className="absolute bottom-1 right-1 bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors shadow-sm">
-                                    <span className="material-symbols-outlined text-base">edit</span>
+                                <button className="absolute bottom-1 right-1 bg-blue-400 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors shadow-sm">
+                                    <CreateIcon/>
                                 </button>
                             </div>
                             <h3 className="text-2xl font-bold text-slate-800">{profile?.full_name}</h3>
