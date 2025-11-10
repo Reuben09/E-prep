@@ -361,7 +361,7 @@ interface QuizSetupProps {
 }
 
 const quizData = {
-  "examTypes": ["WAEC", "NECO", "utme", "post-utme-aaua", "model"],
+  "examTypes": ["waec", "neco", "utme"],
   "subjects": {
     "English language": [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010],
     "Mathematics": [2006, 2007, 2008, 2009, 2013],
@@ -576,7 +576,7 @@ const QuizSetup: React.FC<QuizSetupProps> = ({ onStartQuiz }) => {
         return;
       }
       // When starting the quiz for PDF_UPLOAD, pass the pdfContentId
-      onStartQuiz({ id: quizId, mode, numQuestions, pdfContentId });
+      onStartQuiz({ id: quizId, mode, numQuestions, pdfContentId, pdfExtractedText });
     }
   };
 
@@ -625,22 +625,22 @@ const QuizSetup: React.FC<QuizSetupProps> = ({ onStartQuiz }) => {
             </div>
           </div>
 
-          {mode === QuizMode.PAST_QUESTIONS && (
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="examType" className="block text-lg font-semibold mb-3 text-black">2. Choose an Exam Type</label>
-                <select
-                  id="examType"
-                  value={selectedExamType}
-                  onChange={handleExamTypeChange}
-                  className="w-full p-3 bg-transparent text-[#0099FF] border border-[#0099FF] rounded-lg focus:ring-2 focus:ring-[#0099FF] focus:border-none outline-none"
-                >
-                  <option value="" disabled>Select Exam Type</option>
-                  {quizData.examTypes.map((type) => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
-                </select>
-              </div>
+        {mode === QuizMode.PAST_QUESTIONS && (
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="examType" className="block text-lg font-semibold mb-3 text-black">2. Choose an Exam Type</label>
+              <select
+                id="examType"
+                value={selectedExamType}
+                onChange={handleExamTypeChange}
+                className="w-full p-3 bg-transparent text-[#0099FF] border border-[#0099FF] rounded-lg focus:ring-2 focus:ring-[#0099FF] focus:border-none outline-none"
+              >
+                <option value="" disabled>Select Exam Type</option>
+                {quizData.examTypes.map((type) => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
+              </select>
+            </div>
 
               <div>
                 <label htmlFor="subject" className="block text-lg font-semibold mb-3 text-black">3. Choose a Subject</label>

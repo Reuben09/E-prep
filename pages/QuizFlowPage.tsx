@@ -262,7 +262,8 @@ const QuizFlowPage: React.FC<QuizFlowPageProps> = ({ onBackToDashboard }) => {
         // have already returned the full text in the initial upload response
         // which could then be passed here. For simplicity, assume generateQuizQuestionsFromPdf
         // takes the ID and handles fetching.
-        const generatedQuestions = await generateQuizQuestionsFromPdf(settings.pdfContentId, settings.numQuestions);
+        console.log(settings, 'pdfContentId in quiz flow');
+        const generatedQuestions = await generateQuizQuestionsFromPdf(settings.pdfExtractedText, settings.numQuestions);
         console.log(generatedQuestions, 'generatedQuestions from gemini (pdf)');
         questions = generatedQuestions?.map(q => ({
           ...q,
@@ -316,18 +317,19 @@ const QuizFlowPage: React.FC<QuizFlowPageProps> = ({ onBackToDashboard }) => {
 
     setQuizResult(result);
     let subjectNameForDB: string;
-    let examTypeForDB: string = "N/A"; // Default for AI/PDF generated
+    let examTypeForDB: string = "ai"; // Default for AI/PDF generated
     let modeForDB: string = 'ai_generated'; // Default for AI/PDF generated
 
     if (currentQuiz.settings.mode === QuizMode.PAST_QUESTIONS) {
       subjectNameForDB = currentQuiz.settings.selectedSubject!;
       examTypeForDB = currentQuiz.settings.selectedExamType!.toLowerCase();
-      modeForDB = 'past_questions';
+      modeForDB = 'past';
     } else if (currentQuiz.settings.mode === QuizMode.AI_GENERATED) {
       subjectNameForDB = currentQuiz.settings.topic!.name;
+      examTypeForDB = 'ai';
     } else { // QuizMode.PDF_UPLOAD
       subjectNameForDB = `PDF-${currentQuiz.settings.pdfContentId?.substring(0, 8)}`; // Use a truncated ID
-      modeForDB = 'pdf_generated';
+      modeForDB = 'pdf_upload';
     }
 
     try {

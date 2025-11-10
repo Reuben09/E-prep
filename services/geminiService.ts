@@ -128,6 +128,7 @@ const recommendationSchema = {
 
 
 export const generateQuizQuestionsFromPdf = async (pdfContent: string, numQuestions: number): Promise<Partial<Question>[]> => {
+   console.log(pdfContent, 'pdf content in gemini service');
     if (!API_KEY) {
         // Mock response if API key is not available
         console.log("Using mock questions from PDF content.");
@@ -141,94 +142,19 @@ export const generateQuizQuestionsFromPdf = async (pdfContent: string, numQuesti
 
     try {
 const prompt = `
-You are an expert **mathematics exam question generator**.
-
-You will be given noisy OCR text extracted from a PDF math note or textbook. The text may contain line breaks, unusual spacing, or misread symbols — ignore those and focus on the educational meaning.
-
---- START OF TEXT ---
-${pdfContent}
---- END OF TEXT ---
-
-🎯 TASK:
-Generate ${numQuestions} high-quality, exam-style multiple-choice questions **based only on the real mathematical content** in the text.
-
-🧮 CONTEXT:
-The text discusses fractions — including **addition, subtraction, multiplication, and division** of fractions, both with same and different denominators.
-
-🧭 RULES:
-- Focus on **concepts, examples, and formulas**.
-- Ignore:
-  - Random characters or letters (like “tudent C earning”).
-  - Formatting, headers, or contact info.
-  - Broken equations or non-math fragments.
-- If symbols like 𝐴𝐴/𝐵𝐵 appear, interpret them as generic fractions (A/B).
-- Never generate irrelevant or random questions (like counting characters or unrelated text).
+Generate ${numQuestions} high-quality, exam-style multiple-choice questions based **solely** on ${pdfContent}.
 
 🧩 QUESTION FORMAT:
-Each question must:
-- Test **understanding or application** of a concept from the text.
-- Have **4 options (A–D)**.
-- Contain **1 correct answer** and **3 plausible distractors**.
-- Include a brief **explanation** showing the reasoning or method.
-
-📘 OUTPUT:
-Return strictly a valid JSON array like this:
+Return ONLY valid JSON:
 [
   {
-    "subject": "Mathematics",
-    "topic": "Fractions",
     "prompt": "Question text?",
     "choices": ["A", "B", "C", "D"],
     "answer": 0,
-    "explanation": "Brief explanation or working."
+    "explanation": "Brief reasoning or working."
   }
 ]
-
-⚠️ IMPORTANT:
-- Output **JSON only** — no markdown, no extra text.
-- If the text is incomplete or unclear, infer the most logical math meaning.
-- If examples are shown, base questions on those examples.
-- Never return an empty array — create the best possible questions based on visible math content.
-`;
-
-
-// const prompt = `
-// You are an expert exam question generator.
-
-// Given the following academic text extracted from a PDF document:
-// """
-// ${pdfContent}
-// """
-
-// Generate ${numQuestions} *high-quality, exam-style multiple-choice questions* based **solely** on the information in the text.
-// Your task is to create exam-style multiple-choice questions **only** from the educational content provided below.
-// Ignore any random characters, page numbers, slide headers, IDs, email addresses, or unrelated text.
-
-// Guidelines:
-// - Target difficulty: **High school to pre-university (WAEC/NECO/JAMB-level)**.
-// - Focus on **core ideas, definitions, cause–effect relationships, reasoning, and factual understanding** found in the text.
-// - Avoid trivial details, general knowledge, or guesses not supported by the text.
-// - Do NOT make questions about
-// - Random strings, characters, numbers, or formatting.
-// - General knowledge or assumptions outside the text.
-// - Metadata or file information.
-// - Each question must:
-//   - Be **clear, academically relevant**, and test **understanding**, not recall.
-//   - Have **4 options (A–D)**.
-//   - Have **one correct answer** and **3 plausible distractors**.
-//   - Include a **short explanation** justifying the correct answer.
-// - Vary question structure (conceptual, analytical, application-based).
-// - Output strictly as a **JSON array** in the format below:
-
-// [
-//   {
-//     "prompt": "Question text?",
-//     "choices": ["A", "B", "C", "D"],
-//     "answer": 0, // index of correct choice
-//     "explanation": "Brief reasoning or reference to the text"
-//   }
-// ]
-// `;
+`
 
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash', // Consider 'gemini-1.5-flash' or 'gemini-1.5-pro' for larger text inputs
