@@ -153,6 +153,8 @@ import Typewriter from '@/components/Typewriter';
 import { FadeInFromLeft } from '@/components/FadeInFromLeft';
 import { FadeInFromBottom } from '@/components/FadeInFromBottom';
 import InfiniteCarousel from '@/components/Carousel';
+import LineChart from '@/components/Linechart';
+import SchoolIcon from '@mui/icons-material/School';
 
 const StatCard: React.FC<{ value: string | number; label: string; icon: string }> = ({ value, label, icon }) => (
   <Card className="p-6 flex-1 bg-white max-sm:w-[95vw]">
@@ -170,6 +172,13 @@ const DashboardPage = () => {
   const { user, signOut } = useAuth();
   const [profile, setProfile] = useState<any>(null);
   const navigate = useNavigate();
+  const [prevScores, setPrevScores] = useState<number[]>([])
+  const [prevQuiz, setQuiz] = useState<{
+    score: number;
+    completed: boolean;
+    created_at: string;
+    subject: string;
+  }[]>([]);
   const [stats, setStats] = useState({
     totalQuizzes: 0,
     averageScore: 0,
@@ -213,11 +222,16 @@ const DashboardPage = () => {
     // Load quiz statistics
     const { data: quizzes } = await supabase
       .from('quizzes')
-      .select('score, completed, created_at') // Select created_at to check quiz completion date
+      .select('score, completed, created_at, subject') // Select created_at to check quiz completion date
       .eq('user_id', user.id)
       .eq('completed', true)
       .order('created_at', { ascending: false }); // Order by most recent quiz
 
+    const scores = quizzes.map(item => item.score);
+    console.log(scores)
+    console.log(quizzes)
+    setQuiz(quizzes)
+    setPrevScores(scores)
     if (quizzes && quizzes.length > 0) {
       const totalScore = quizzes.reduce((sum, quiz) => sum + (quiz.score || 0), 0);
       setStats(prev => ({
@@ -335,7 +349,7 @@ const DashboardPage = () => {
         </div>
 
         <div className=' w-full flex flex-col lg:flex-row items-center lg:items-start justify-start lg:justify-between lg:px-[20px]'>
-          <div className=' w-[95%] lg:w-[55%]'>
+          <div className=' w-[95%] lg:w-[50%]'>
             <FadeInFromLeft>
               <div className=' w-full  h-full flex flex-col items-center justify-start bg-transparent rounded-2xl mb-[20px]'>
                 <Card className="p-8 text-center bg-white mb-[20px]">
@@ -355,13 +369,41 @@ const DashboardPage = () => {
             </FadeInFromLeft>
           </div>
 
-          <div className=' w-[95%] lg:w-[55%]'>
+          <div className=' w-[95%] lg:w-[45%]'>
             <FadeInFromBottom>
-              <div className=' w-full h-full flex items-start justify-center bg-white rounded-2xl'>
+              <div className=' w-full flex items-start justify-center bg-white rounded-2xl'>
                 <Card className="p-6 w-full bg-transparent">
                   <h3 className="text-2xl font-bold mb-4 text-black">Your Recent Activity</h3>
-                  <ul className="space-y-4">
-                    <li className="flex justify-between items-center p-4 bg-transparent rounded-lg">
+                  <ul className="space-y-4 h-[30vh] overflow-y-scroll">
+                    {
+                      prevQuiz.map((quiz, index) => {
+                        const date = new Date(quiz.created_at);
+
+                        // Format hours and minutes
+                        const hours = String(date.getHours()).padStart(2, "0");
+                        const minutes = String(date.getMinutes()).padStart(2, "0");
+                    
+                        // Format day, month, year
+                        const day = String(date.getDate()).padStart(2, "0");
+                        const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-indexed
+                        const year = date.getFullYear();
+                    
+                        const formattedDate = `${hours}:${minutes} ${day}-${month}-${year}`;
+
+                        return(
+                          <li key={index} className="flex justify-between items-center p-4 bg-transparent rounded-lg">
+                          <div>
+                            <p className="font-semibold text-black">{quiz.subject}</p>
+                            <p className="text-sm text-gray-400">Completed at {formattedDate}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className={`font-bold text-green-400 ${quiz.score <= 30 ? "text-red-500" : quiz.score <= 60 ? "text-amber-400" : quiz.score > 60 && "text-green-500"}`}>Score: {quiz.score}%</p>
+                          </div>
+                        </li>
+                        )
+                      })
+                    }
+                    {/* <li className="flex justify-between items-center p-4 bg-transparent rounded-lg">
                       <div>
                         <p className="font-semibold text-black">Quiz: Photosynthesis</p>
                         <p className="text-sm text-gray-400">Completed 2 hours ago</p>
@@ -378,7 +420,7 @@ const DashboardPage = () => {
                       <div className="text-right">
                         <p className="font-bold text-yellow-400">Score: 60%</p>
                       </div>
-                    </li>
+                    </li> */}
                   </ul>
                 </Card>
               </div>
@@ -387,9 +429,17 @@ const DashboardPage = () => {
 
         </div>
 
-        <div>
-          <InfiniteCarousel/>
+
+        <div className=' w-[100vw] flex items-center justify-between'>
+          <LineChart dataPoints={prevScores} />
+          <div className=' w-[60%]'>
+
+          </div>
         </div>
+
+        {/* <div>
+          <InfiniteCarousel />
+        </div> */}
       </div>
     </div>
   );
