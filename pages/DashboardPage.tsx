@@ -430,11 +430,11 @@ const DashboardPage = () => {
         </div>
 
 
-        <div className=' w-[100vw] flex items-center justify-between'>
+        <div className=' w-[100vw] flex flex-col lg:flex-row items-center justify-between'>
           <LineChart dataPoints={prevScores} />
-          <div className=' w-[60%]'>
+          {/* <div className=' w-[60%]'>
           <img src="../assets/Eprep.png" alt=""  className='w-[300px] mx-auto'/>
-          </div>
+          </div> */}
         </div>
 
         {/* <div>

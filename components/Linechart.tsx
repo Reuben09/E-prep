@@ -119,7 +119,7 @@ const BarChart = ({ dataPoints }) => {
     };
 
     return (
-        <div className="w-[40%] flex flex-row items-start justify-between px-[30px]">
+        <div className=" max-sm:h-[80vh] lg:w-[40%] flex flex-row items-start justify-between px-[30px]">
             {/* <h1 className='text-[#0099FF] font-semibold text-3xl'>Progress Chart</h1> */}
             <Bar data={data} options={options} />
             
