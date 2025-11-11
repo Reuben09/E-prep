@@ -8,6 +8,7 @@ import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { motion } from "framer-motion";
 import { useState } from 'react';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const Sidebar = ({ screen }) => {
     const { user, signOut } = useAuth(); // Get user and signOut from AuthContext
@@ -41,6 +42,13 @@ const Sidebar = ({ screen }) => {
                             className=' mb-[10px] block'
                         >
                             <div className={`${screen === "quiz" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><QuizRoundedIcon className=' mr-[5px]' />Quizzes</div>
+                        </Link>
+
+                        <Link
+                            to={"/settings"}
+                            className=' mb-[10px] block'
+                        >
+                            <div className={`${screen === "settings" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><SettingsIcon className=' mr-[5px]' />Settings</div>
                         </Link>
 
                         {/* <Link

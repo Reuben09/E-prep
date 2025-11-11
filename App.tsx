@@ -5,6 +5,7 @@ import DashboardPage from './pages/DashboardPage';
 import QuizFlowPage from './pages/QuizFlowPage';
 import { AuthProvider, useAuth } from './contexts/AuthContext'; // Import useAuth
 import { Toaster } from 'sonner'; // For displaying toasts globally
+import SettingsPage from './pages/SettingsPage';
 
 // A simple PrivateRoute component to protect authenticated routes
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -45,32 +46,41 @@ const AppContent: React.FC = () => {
            </nav>
          </header>
       )} */}
-      
+
       <Routes>
         {/* Public route for authentication */}
         <Route path="/auth" element={<AuthPage />} />
 
         {/* Protected routes */}
-        <Route 
-          path="/dashboard" 
+        <Route
+          path="/dashboard"
           element={
             <PrivateRoute>
               <DashboardPage /> {/* DashboardPage now receives user from context if needed internally */}
             </PrivateRoute>
-          } 
+          }
         />
-        <Route 
-          path="/quiz" 
+        <Route
+          path="/quiz"
           element={
             <PrivateRoute>
               <QuizFlowPage /> {/* QuizFlowPage can also fetch user from context */}
             </PrivateRoute>
-          } 
+          }
+        />
+
+        <Route
+          path="/settings"
+          element={
+            <PrivateRoute>
+              <SettingsPage />
+            </PrivateRoute>
+          }
         />
 
         {/* Redirect root to dashboard if logged in, otherwise to auth */}
         <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Navigate to="/auth" />} />
-        
+
         {/* Fallback for unknown routes */}
         <Route path="*" element={<p className="text-center text-red-500 mt-10">404: Page Not Found</p>} />
       </Routes>
