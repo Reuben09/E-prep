@@ -316,7 +316,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className=' bg-slate-100'>
+    <div className=' bg-slate-100 w-[100vw] overflow-x-hidden'>
       <Sidebar screen={"dashboard"} />
       <div className="max-sm:pt-[90px] bg-slate-100 mx-auto lg:px-4 py-8 space-y-8 lg:pl-[15vw]">
         <div className=' w-full lg:px-[20px] border-b border-b-slate-300'>
@@ -397,7 +397,7 @@ const DashboardPage = () => {
                             <p className="text-sm text-gray-400">Completed at {formattedDate}</p>
                           </div>
                           <div className="text-right">
-                            <p className={`font-bold text-green-400 ${quiz.score <= 30 ? "text-red-500" : quiz.score <= 60 ? "text-amber-400" : quiz.score > 60 && "text-green-500"}`}>Score: {quiz.score}%</p>
+                            <p className={`font-bold text-green-400 ${quiz.score <= 30 ? "text-red-500" : quiz.score <= 60 ? "text-amber-500" : quiz.score > 60 && "text-green-500"}`}>Score: {quiz.score}%</p>
                           </div>
                         </li>
                         )
@@ -430,11 +430,11 @@ const DashboardPage = () => {
         </div>
 
 
-        <div className=' w-[100vw] flex items-center justify-between'>
+        <div className=' w-[100vw] flex flex-col lg:flex-row items-center justify-between'>
           <LineChart dataPoints={prevScores} />
-          <div className=' w-[60%]'>
-
-          </div>
+          {/* <div className=' w-[60%]'>
+          <img src="../assets/Eprep.png" alt=""  className='w-[300px] mx-auto'/>
+          </div> */}
         </div>
 
         {/* <div>
