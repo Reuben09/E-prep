@@ -157,7 +157,7 @@ Return ONLY valid JSON:
 `
 
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash', // Consider 'gemini-1.5-flash' or 'gemini-1.5-pro' for larger text inputs
+            model: 'gemini-2.5-pro', // Consider 'gemini-1.5-flash' or 'gemini-1.5-pro' for larger text inputs
             contents: prompt,
             config: {
                 responseMimeType: "application/json",
@@ -198,7 +198,7 @@ export const generateQuizQuestionsFromTopic = async (topic: Topic, numQuestions:
         const prompt = `Generate ${numQuestions} multiple-choice questions for an exam on the topic "${topic.name}". The questions should be high-school level difficulty. Ensure there are 4 choices for each question.`;
         
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-2.5-pro',
             contents: prompt,
             config: {
                 responseMimeType: "application/json",
@@ -232,10 +232,10 @@ export const getStudyRecommendations = async (topic: Topic): Promise<StudyRecomm
     }
 
     try {
-        const prompt = `Provide 3 study recommendations for a student weak in "${topic.name}". Include a mix of YouTube videos and books.`;
+        const prompt = `Provide 3 study recommendations for a student weak in "${topic.name}". Include a mix of YouTube videos and books. and the links must be valid`;
 
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-2.5-pro',
             contents: prompt,
             config: {
                 responseMimeType: "application/json",
