@@ -25,6 +25,8 @@ export interface Question {
   answer: number; // index of the correct choice
   explanation: string;
   topicId: string;
+  question: string;
+  options: string[];
 }
 
 export interface QuizSettings {
@@ -65,4 +67,14 @@ export interface StudyRecommendation {
   title: string;
   url: string;
   thumbnail?: string;
+}
+
+export interface Recommendation {
+  videos: { title: string; url: string; }[];
+  books: { title: string; author: string; }[];
+}
+
+export interface Analysis {
+  weakTopics: string[];
+  summary: string;
 }

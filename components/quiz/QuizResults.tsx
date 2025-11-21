@@ -1,9 +1,13 @@
 
 import React, { useEffect, useState, useMemo } from 'react';
 import { Quiz, QuizResult, StudyRecommendation, Question, Topic } from '../../types';
-import { getStudyRecommendations } from '../../services/geminiService';
+import { getRecommendations, analyzeQuizResults } from '../../services/geminiService';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
+import { BookOpenIcon, VideoCameraIcon, ChartBarIcon, SparklesIcon } from './../icons/icons';
+import analysisResult from '../../analysis.json'
+import Spinner from './Spinner';
+import recommendationResult from '../../recommendation.json'
 
 interface QuizResultsProps {
   quiz: Quiz;
@@ -12,50 +16,67 @@ interface QuizResultsProps {
   onNewQuiz: () => void;
 }
 
-const RecommendationCard: React.FC<{ rec: StudyRecommendation }> = ({ rec }) => (
-    <a href={rec.url} target="_blank" rel="noopener noreferrer" className="hover:bg-[#0099FF] block p-4 hover:bg-transparent border-[#0099FF] text-black border border-[#0099FF] hover:text-white rounded-lg transition-all">
-        <div className="flex items-center gap-4">
-            <div className="text-2xl">
-                {rec.type === 'youtube' ? '📺' : '📚'}
-            </div>
-            <div>
-                <p className="font-semibold">{rec.title}</p>
-                <p className="text-sm underline">{rec.type.charAt(0).toUpperCase() + rec.type.slice(1)}</p>
-            </div>
-        </div>
-    </a>
-)
+  const ResultCard = ({ title, icon, children }: React.PropsWithChildren<{ title: string; icon: React.ReactNode; }>) => (
+    <div className="bg-gray-800 rounded-xl p-6 animate-slide-in-up shadow-lg">
+      <div className="flex items-center mb-4">
+        {icon}
+        <h3 className="text-xl font-bold text-white ml-3">{title}</h3>
+      </div>
+      {children}
+    </div>
+  );
+
 
 const QuizResults: React.FC<QuizResultsProps> = ({ quiz, result, onRestart, onNewQuiz }) => {
     const [recommendations, setRecommendations] = useState<StudyRecommendation[]>([]);
-    const [isLoadingRecs, setIsLoadingRecs] = useState<boolean>(false);
-
-    const weakestTopic = useMemo(() => {
-        if (!result.topicPerformance || result.topicPerformance.length === 0) return null;
-        
-        return result.topicPerformance.reduce((weakest, current) => {
-            const weakestAccuracy = weakest.correct / weakest.total;
-            const currentAccuracy = current.correct / current.total;
-            return currentAccuracy < weakestAccuracy ? current : weakest;
-        });
-    }, [result.topicPerformance]);
-
+    const [resultAnalysis, setResultAnalysis] = useState<[]>([]);
+     const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(true);
+      const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (weakestTopic) {
-            const fetchRecs = async () => {
-                setIsLoadingRecs(true);
-                try {
-                    const recs = await getStudyRecommendations({ id: weakestTopic.topicName, name: weakestTopic.topicName });
-                    setRecommendations(recs);
-                } catch (error) {
-                    console.error("Failed to fetch recommendations", error);
-                }
-                setIsLoadingRecs(false);
-            };
-            fetchRecs();
+    const fetchAnalysisAndRecs = async () => {
+        const incorrectAnswers = result.answers.filter(a => !a.isCorrect);
+        setIsLoadingAnalysis(true);
+
+        const MAX_RETRIES = 10; // Or however many retries you want
+        let retries = 0;
+
+        const attemptFetch = async () => {
+            try {
+                const analysis = await analyzeQuizResults(incorrectAnswers);
+                const recs = await getRecommendations(analysis.weakTopics);
+                setRecommendations(recs);
+                setResultAnalysis(analysis);
+                console.log("Fetched analysis:", analysis);
+                console.log("Fetched recommendations:", recs);
+                return true; // Success
+            } catch (e: any) {
+                console.log(e, 'Error fetching analysis or recommendations');
+                return false; // Failure
+            }
+        };
+
+        while (retries < MAX_RETRIES) {
+            const success = await attemptFetch();
+            console.log(success, `Attempt ${retries + 1} of ${MAX_RETRIES}`);
+            if (success) {
+                console.log("exiting loop");
+                break; // Exit loop on success
+            }
+            retries++;
+            if (retries < MAX_RETRIES) {
+                console.log(`Retrying in 10 seconds... (Attempt ${retries + 1} of ${MAX_RETRIES})`);
+                await new Promise(resolve => setTimeout(resolve, 10000)); // Wait 10 seconds
+            }
         }
-    }, [weakestTopic]);
+
+        setIsLoadingAnalysis(false);
+        console.log("Incorrect Answers:", incorrectAnswers);
+    };
+
+    fetchAnalysisAndRecs();
+}, [result]);
+
 
     return (
         <div className="w-full max-w-4xl mx-auto space-y-6">
@@ -70,22 +91,56 @@ const QuizResults: React.FC<QuizResultsProps> = ({ quiz, result, onRestart, onNe
                     <Button onClick={onNewQuiz}>Start New Quiz</Button>
                 </div>
             </Card>
+                 <div className="grid md:grid-cols-2 gap-6">
+        {/* Analysis Card */}
+        <ResultCard title="AI Performance Analysis" icon={<ChartBarIcon className="w-7 h-7 text-brand-secondary"/>}>
+          {isLoadingAnalysis && <div className="flex justify-center items-center h-40"><Spinner /></div>}
+          {error && <p className="text-red-400">{error}</p>}
+          {resultAnalysis && (
+            <div className="text-gray-300 space-y-4">
+              <p>{resultAnalysis.summary}</p>
+              {resultAnalysis.weakTopics?.length > 0 && (
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Areas to Focus On:</h4>
+                  <ul className="list-disc list-inside space-y-1">
+                    {resultAnalysis.weakTopics.map(topic => <li key={topic}>{topic}</li>)}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </ResultCard>
 
-            {recommendations.length > 0 && (
-                <Card className="p-6 bg-white">
-                    <h3 className="text-2xl font-bold mb-4 text-black">Study Recommendations for <span className="text-brand-primary">{weakestTopic?.topicName}</span></h3>
-                    {isLoadingRecs ? (
-                        <div className="space-y-3">
-                            <div className="w-full h-16 bg-[#0099FF] rounded-lg animate-pulse"></div>
-                            <div className="w-full h-16 bg-[#0099FF] rounded-lg animate-pulse"></div>
-                        </div>
-                    ) : (
-                        <div className="space-y-3">
-                            {recommendations.map((rec, index) => <RecommendationCard key={index} rec={rec} />)}
-                        </div>
-                    )}
-                </Card>
-            )}
+        {/* Recommendations Card */}
+        <ResultCard title="Study Recommendations" icon={<SparklesIcon className="w-7 h-7 text-brand-accent"/>}>
+          {isLoadingAnalysis && <div className="flex justify-center items-center h-40"><Spinner /></div>}
+          {error && <p className="text-red-400">Could not load recommendations.</p>}
+          {recommendations && (
+             <div className="space-y-6">
+               {recommendations?.videos?.length > 0 && (
+                 <div>
+                   <h4 className="font-semibold text-white mb-3 flex items-center"><VideoCameraIcon className="w-5 h-5 mr-2" />Recommended Videos</h4>
+                   <ul className="space-y-2">
+                     {recommendations?.videos?.map((video, i) => (
+                       <li key={i}><a href={video.url} target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 transition-colors">{video.title}</a></li>
+                     ))}
+                   </ul>
+                 </div>
+               )}
+               {recommendations?.books?.length > 0 && (
+                <div>
+                  <h4 className="font-semibold text-white mb-3 flex items-center"><BookOpenIcon className="w-5 h-5 mr-2" />Recommended Books</h4>
+                  <ul className="space-y-2 text-gray-300">
+                    {recommendations?.books?.map((book, i) => (
+                      <li key={i}><strong>{book.title}</strong> by {book.author}</li>
+                    ))}
+                  </ul>
+                </div>
+               )}
+             </div>
+          )}
+        </ResultCard>
+      </div>
 
             <Card className="p-6 bg-white text-black">
                 <h3 className="text-2xl font-bold mb-4">Review Your Answers</h3>

@@ -469,7 +469,7 @@ const QuizSetup: React.FC<QuizSetupProps> = ({ onStartQuiz }) => {
       formData.append('pdf', file);
 
       // 1️⃣ Upload PDF to backend
-      const uploadResponse = await fetch('http://localhost:5000/api/upload-pdf', {
+      const uploadResponse = await fetch('https://e-prep-server.onrender.com/api/upload-pdf', {
         method: 'POST',
         body: formData,
       });
@@ -486,7 +486,7 @@ const QuizSetup: React.FC<QuizSetupProps> = ({ onStartQuiz }) => {
       alert('PDF uploaded successfully! Fetching extracted text...');
 
       // 2️⃣ Fetch extracted text using the contentId
-      const textResponse = await fetch(`http://localhost:5000/api/get-pdf-content/${contentId}`);
+      const textResponse = await fetch(`https://e-prep-server.onrender.com/api/get-pdf-content/${contentId}`);
 
       if (!textResponse.ok) {
         const errorData = await textResponse.json();

@@ -14,12 +14,6 @@ const QuizPlayer: React.FC<QuizPlayerProps> = ({ quiz, onSubmit }) => {
   const [userAnswers, setUserAnswers] = useState<Map<string, number>>(new Map());
   const [timeLeft, setTimeLeft] = useState(quiz.questions.length * 60); // 60 seconds per question
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
-  //   }, 1000);
-  //   return () => clearInterval(timer);
-  // }, []);
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
@@ -60,6 +54,7 @@ const QuizPlayer: React.FC<QuizPlayerProps> = ({ quiz, onSubmit }) => {
         const answer = userAnswers.get(q.id);
         return {
             questionId: q.id,
+            question: q.prompt,
             answer: answer ?? -1,
             isCorrect: answer === q.answer
         }
