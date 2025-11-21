@@ -155,14 +155,15 @@ import { FadeInFromBottom } from '@/components/FadeInFromBottom';
 import InfiniteCarousel from '@/components/Carousel';
 import LineChart from '@/components/Linechart';
 import SchoolIcon from '@mui/icons-material/School';
+import Calendar from '@/components/Calendar';
 
 const StatCard: React.FC<{ value: string | number; label: string; icon: string }> = ({ value, label, icon }) => (
-  <Card className="p-6 flex-1 bg-white max-sm:w-[95vw]">
+  <Card className="p-6 flex items-center justify-center bg-white max-sm:w-[95vw] h-[87px]">
     <div className="flex items-center gap-4">
       <div className="text-4xl">{icon}</div>
       <div>
-        <p className="text-3xl font-bold text-black">{value}</p>
-        <p className="text-gray-400">{label}</p>
+        <p className="text-[#666666]">{label}</p>
+        <p className="text-[24px] font-semibold text-black">{value}</p>
       </div>
     </div>
   </Card>
@@ -320,7 +321,7 @@ const DashboardPage = () => {
       <Sidebar screen={"dashboard"} />
       <div className="max-sm:pt-[90px] bg-slate-100 mx-auto lg:px-4 py-8 space-y-8 lg:pl-[15vw]">
         <div className=' w-full lg:px-[20px] border-b border-b-slate-300'>
-          <h1 className="text-4xl font-bold text-black max-sm:mx-2">Welcome back, <span className="bg-clip-text max-sm:hidden text-black bg-gradient-to-r from-brand-primary to-brand-secondary">
+          <h1 className="text-[24px] font-bold text-black max-sm:mx-2">Welcome back, <span className="bg-clip-text max-sm:hidden text-black bg-gradient-to-r from-brand-primary to-brand-secondary">
             <Typewriter
               texts={[
                 `${profile?.full_name}`,
@@ -335,7 +336,7 @@ const DashboardPage = () => {
               {profile?.full_name}
             </span>
             !</h1>
-          <p className="text-gray-400 text-lg mt-1 max-sm:mx-2 max-sm:hidden">Let's get some practice in today.</p>
+          <p className="text-gray-400 text-[16px] mt-1 max-sm:mx-2 max-sm:hidden">Let's get some practice in today.</p>
           <p className="text-gray-400 text-lg mt-1 max-sm:mx-2 lg:hidden">
             <Typewriter
               texts={[
@@ -349,31 +350,83 @@ const DashboardPage = () => {
         </div>
 
         <div className=' w-full flex flex-col lg:flex-row items-center lg:items-start justify-start lg:justify-between lg:px-[20px]'>
-          <div className=' w-[95%] lg:w-[50%]'>
+          <div className=' w-[95%] lg:w-[40%]'>
             <FadeInFromLeft>
-              <div className=' w-full  h-full flex flex-col items-center justify-start bg-transparent rounded-2xl mb-[20px]'>
-                <Card className="p-8 text-center bg-white mb-[20px]">
-                  <h2 className="text-3xl font-bold mb-4 text-black">Start a New Quiz</h2>
-                  <p className="text-gray-400 max-w-2xl mx-auto mb-6">Challenge yourself with past questions or let our AI create a custom quiz just for you.</p>
-                  <Button onClick={handleStartQuizClick} className="!px-10 !py-4 text-xl">
+              <div className=' w-full  h-full flex flex-col items-center justify-start bg-transparent rounded-2xl mb-[10px]'>
+                <Card className="p-[15px] text-center bg-white mb-[20px]">
+                  <h2 className="text-[24px] font-semibold mb-2 text-black text-left">Start a New Quiz</h2>
+                  <p className="text-[#666666] max-w-2xl text-left text-[16px] mx-auto mb-6">Challenge yourself with past questions or let our AI create a custom quiz just for you.</p>
+                  <Button onClick={handleStartQuizClick} className="!px-10 !py-4 text-[15px] font-semibold w-full h-[41px]">
                     Let's Go!
                   </Button>
                 </Card>
-
-                <div className="grid md:grid-cols-3 gap-6">
-                  <StatCard value={stats?.streak} label="Day Streak" icon="🔥" />
-                  <StatCard value={stats?.averageScore} label="Avg. Score" icon="🎯" />
-                  <StatCard value={stats?.badges?.length} label="Badges Earned" icon="🏆" />
-                </div>
               </div>
             </FadeInFromLeft>
+
+            <Card className="p-6 w-full bg-white">
+              <h3 className="text-[18px] font-bold mb-4 text-black border-b border-b-slate-400 pb-[10px]">Upcoming Exams</h3>
+              <ul className="space-y-4 h-[15vh] overflow-y-scroll">
+                {
+                  prevQuiz.map((quiz, index) => {
+                    const date = new Date(quiz.created_at);
+
+                    // Format hours and minutes
+                    const hours = String(date.getHours()).padStart(2, "0");
+                    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+                    // Format day, month, year
+                    const day = String(date.getDate()).padStart(2, "0");
+                    const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-indexed
+                    const year = date.getFullYear();
+
+                    const formattedDate = `${hours}:${minutes} ${day}-${month}-${year}`;
+
+                    return (
+                      <li key={index} className="flex justify-between items-center bg-transparent rounded-lg">
+                        <div>
+                          <p className="font-semibold text-black">{quiz.subject}</p>
+                          {/* <p className="text-sm text-gray-400">Completed at {formattedDate}</p> */}
+                        </div>
+                        <div className="text-right">
+                          {/* <p className={`font-bold text-green-400 ${quiz.score <= 30 ? "text-red-500" : quiz.score <= 60 ? "text-amber-500" : quiz.score > 60 && "text-green-500"}`}>Score: {quiz.score}%</p> */}
+                          <p className=' text-black'>Nov 29</p>
+                        </div>
+                      </li>
+                    )
+                  })
+                }
+                {/* <li className="flex justify-between items-center p-4 bg-transparent rounded-lg">
+                      <div>
+                        <p className="font-semibold text-black">Quiz: Photosynthesis</p>
+                        <p className="text-sm text-gray-400">Completed 2 hours ago</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-green-400">Score: 85%</p>
+                      </div>
+                    </li>
+                    <li className="flex justify-between items-center p-4 bg-transparent rounded-lg">
+                      <div>
+                        <p className="font-semibold text-black">Quiz: Algebra</p>
+                        <p className="text-sm text-gray-400">Completed yesterday</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-yellow-400">Score: 60%</p>
+                      </div>
+                    </li> */}
+              </ul>
+            </Card>
           </div>
 
-          <div className=' w-[95%] lg:w-[45%]'>
+          <div className=' w-[95%] lg:w-[57%]'>
+            <div className="grid md:grid-cols-3 gap-6 mb-[10px]">
+              <StatCard value={stats?.streak} label="Day Streak" icon="🔥" />
+              <StatCard value={stats?.averageScore} label="Avg. Score" icon="🎯" />
+              <StatCard value={stats?.badges?.length} label="Badges Earned" icon="🏆" />
+            </div>
             <FadeInFromBottom>
               <div className=' w-full flex items-start justify-center bg-white rounded-2xl'>
                 <Card className="p-6 w-full bg-transparent">
-                  <h3 className="text-2xl font-bold mb-4 text-black">Your Recent Activity</h3>
+                  <h3 className="text-[18px] font-bold mb-4 text-black border-b border-b-slate-400 pb-[10px]">Your Recent Quizzes</h3>
                   <ul className="space-y-4 h-[30vh] overflow-y-scroll">
                     {
                       prevQuiz.map((quiz, index) => {
@@ -382,24 +435,24 @@ const DashboardPage = () => {
                         // Format hours and minutes
                         const hours = String(date.getHours()).padStart(2, "0");
                         const minutes = String(date.getMinutes()).padStart(2, "0");
-                    
+
                         // Format day, month, year
                         const day = String(date.getDate()).padStart(2, "0");
                         const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-indexed
                         const year = date.getFullYear();
-                    
+
                         const formattedDate = `${hours}:${minutes} ${day}-${month}-${year}`;
 
-                        return(
+                        return (
                           <li key={index} className="flex justify-between items-center p-4 bg-transparent rounded-lg">
-                          <div>
-                            <p className="font-semibold text-black">{quiz.subject}</p>
-                            <p className="text-sm text-gray-400">Completed at {formattedDate}</p>
-                          </div>
-                          <div className="text-right">
-                            <p className={`font-bold text-green-400 ${quiz.score <= 30 ? "text-red-500" : quiz.score <= 60 ? "text-amber-500" : quiz.score > 60 && "text-green-500"}`}>Score: {quiz.score}%</p>
-                          </div>
-                        </li>
+                            <div>
+                              <p className="font-semibold text-black">{quiz.subject}</p>
+                              <p className="text-sm text-gray-400">Completed at {formattedDate}</p>
+                            </div>
+                            <div className="text-right">
+                              <p className={`font-bold text-green-400 ${quiz.score <= 30 ? "text-red-500" : quiz.score <= 60 ? "text-amber-500" : quiz.score > 60 && "text-green-500"}`}>Score: {quiz.score}%</p>
+                            </div>
+                          </li>
                         )
                       })
                     }
@@ -430,11 +483,24 @@ const DashboardPage = () => {
         </div>
 
 
-        <div className=' w-[100vw] flex flex-col lg:flex-row items-center justify-between'>
-          <LineChart dataPoints={prevScores} />
-          {/* <div className=' w-[60%]'>
-          <img src="../assets/Eprep.png" alt=""  className='w-[300px] mx-auto'/>
-          </div> */}
+        <div className='w-full flex flex-col lg:flex-row items-center lg:items-start justify-start lg:justify-between lg:px-[20px]'>
+          <div className=' lg:w-[70%] w-[100%] rounded-md flex flex-col lg:flex-row items-center justify-center bg-white p-[10px]'>
+            <LineChart dataPoints={prevScores} />
+          </div>
+
+          <div className=' w-[95%] lg:w-[28%]'>
+            <h1 className=' text-[18px] text-black font-semibold'>Your Calendar</h1>
+            <FadeInFromLeft>
+              <Calendar
+                highlightedDates={[
+                  "2025-11-11",
+                  "2025-11-12",
+                  "2025-11-13",
+                  "2025-11-14"
+                ]}
+              />
+            </FadeInFromLeft>
+          </div>
         </div>
 
         {/* <div>
