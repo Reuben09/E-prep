@@ -17,10 +17,10 @@ interface QuizResultsProps {
 }
 
   const ResultCard = ({ title, icon, children }: React.PropsWithChildren<{ title: string; icon: React.ReactNode; }>) => (
-    <div className="bg-gray-800 rounded-xl p-6 animate-slide-in-up shadow-lg">
+    <div className="bg-white rounded-xl p-6 animate-slide-in-up shadow-lg">
       <div className="flex items-center mb-4">
-        {icon}
-        <h3 className="text-xl font-bold text-white ml-3">{title}</h3>
+        {/* {icon} */}
+        <h3 className="text-xl font-bold text-black ml-3">{title}</h3>
       </div>
       {children}
     </div>
@@ -82,12 +82,14 @@ const QuizResults: React.FC<QuizResultsProps> = ({ quiz, result, onRestart, onNe
         <div className="w-full max-w-4xl mx-auto space-y-6">
             <Card className="p-8 text-center bg-white">
                 <h2 className="text-4xl font-bold mb-2 text-[#0099FF]">Quiz Complete!</h2>
-                <p className="text-gray-400 mb-6">Here's how you did on {quiz.settings.selectedSubject}.</p>
+                <p className="text-gray-400 mb-6">Here's how you did 
+                {/* on {quiz.settings.selectedSubject}. */}
+                </p>
                 <div className="text-7xl font-bold bg-clip-text text-[#0099FF] bg-gradient-to-r from-brand-primary to-brand-secondary mb-4">
                     {result.score}%
                 </div>
                  <div className="flex justify-center gap-4 mt-8">
-                    <Button onClick={onRestart} variant="secondary">Try Again</Button>
+                    <Button onClick={onRestart} variant="tertiary">Try Again</Button>
                     <Button onClick={onNewQuiz}>Start New Quiz</Button>
                 </div>
             </Card>
@@ -97,7 +99,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ quiz, result, onRestart, onNe
           {isLoadingAnalysis && <div className="flex justify-center items-center h-40"><Spinner /></div>}
           {error && <p className="text-red-400">{error}</p>}
           {resultAnalysis && (
-            <div className="text-gray-300 space-y-4">
+            <div className="text-[#666666] space-y-4">
               <p>{resultAnalysis.summary}</p>
               {resultAnalysis.weakTopics?.length > 0 && (
                 <div>
@@ -129,8 +131,8 @@ const QuizResults: React.FC<QuizResultsProps> = ({ quiz, result, onRestart, onNe
                )}
                {recommendations?.books?.length > 0 && (
                 <div>
-                  <h4 className="font-semibold text-white mb-3 flex items-center"><BookOpenIcon className="w-5 h-5 mr-2" />Recommended Books</h4>
-                  <ul className="space-y-2 text-gray-300">
+                  <h4 className="font-semibold text-[#666666] mb-3 flex items-center"><BookOpenIcon className="w-5 h-5 mr-2" />Recommended Books</h4>
+                  <ul className="space-y-2 text-[#666666]">
                     {recommendations?.books?.map((book, i) => (
                       <li key={i}><strong>{book.title}</strong> by {book.author}</li>
                     ))}
