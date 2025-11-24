@@ -607,155 +607,179 @@ const QuizSetup: React.FC<QuizSetupProps> = ({ onStartQuiz }) => {
     </button>
   );
 
+  const images = [
+    "/img1.jpg",
+    "/img2.jpg",
+    "/img3.jpg",
+    "/img4.jpg",
+    "/img5.jpg"
+  ];
+
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 10000); // Change every 3 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className=' '>
       <Sidebar screen={"quiz"} />
-      <div className=' h-[100vh] w-full flex items-center justify-center'>
-        <FadeInFromBottom>
-          <Card className="w-full h-fit my-auto max-w-2xl mx-auto p-6 md:p-8 bg-white">
-            <h2 className="text-3xl font-bold text-center mb-2 bg-clip-text text-black">
-              Create a New Quiz
-            </h2>
-            <p className="text-center text-gray-400 mb-8">Choose your challenge and prove your knowledge.</p>
+      <div className=' min-h-[100vh] w-[100vw] flex flex-col-reverse lg:flex-row items-center justify-between max-sm:pt-[100px] px-[2.5%]'>
+        <div className=' w-[100%] lg:w-[70%] flex flex-row items-end justify-end'>
+          <div className=' lg:w-[60%]'>
+            <FadeInFromBottom>
+              <Card className="w-full h-fit my-auto max-w-2xl mx-auto p-6 md:p-8 bg-white">
+                <h2 className="text-3xl font-bold text-center mb-2 bg-clip-text text-black">
+                  Create a New Quiz
+                </h2>
+                <p className="text-center text-gray-400 mb-8">Choose your challenge and prove your knowledge.</p>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-lg font-semibold mb-3 text-black">1. Select Quiz Mode</label>
-                <div className="flex gap-4">
-                  <ModeButton value={QuizMode.PAST_QUESTIONS} icon={<BookOpenIcon className="w-8 h-8 text-[#0099FF]" />} label="Past Questions" />
-                  <ModeButton value={QuizMode.AI_GENERATED} icon={<BrainCircuitIcon className="w-8 h-8 text-[#0099FF]" />} label="AI Generated" />
-                  <ModeButton value={QuizMode.PDF_UPLOAD} icon={<CloudUploadIcon className="w-8 h-8 text-[#0099FF]" />} label="PDF Upload" />
-                </div>
-              </div>
-
-              {mode === QuizMode.PAST_QUESTIONS && (
-                <div className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label htmlFor="examType" className="block text-lg font-semibold mb-3 text-black">2. Choose an Exam Type</label>
-                    <select
-                      id="examType"
-                      value={selectedExamType}
-                      onChange={handleExamTypeChange}
-                      className="w-full p-3 bg-transparent text-[#0099FF] border border-[#0099FF] rounded-lg focus:ring-2 focus:ring-[#0099FF] focus:border-none outline-none"
-                    >
-                      <option value="" disabled>Select Exam Type</option>
-                      {quizData.examTypes.map((type) => (
-                        <option key={type} value={type}>{type}</option>
-                      ))}
-                    </select>
+                    <label className="block text-lg font-semibold mb-3 text-black">1. Select Quiz Mode</label>
+                    <div className="flex gap-4">
+                      <ModeButton value={QuizMode.PAST_QUESTIONS} icon={<BookOpenIcon className="w-8 h-8 text-[#0099FF]" />} label="Past Questions" />
+                      <ModeButton value={QuizMode.AI_GENERATED} icon={<BrainCircuitIcon className="w-8 h-8 text-[#0099FF]" />} label="AI Generated" />
+                      <ModeButton value={QuizMode.PDF_UPLOAD} icon={<CloudUploadIcon className="w-8 h-8 text-[#0099FF]" />} label="PDF Upload" />
+                    </div>
                   </div>
 
-                  <div>
-                    <label htmlFor="subject" className="block text-lg font-semibold mb-3 text-black">3. Choose a Subject</label>
-                    <select
-                      id="subject"
-                      value={selectedSubject}
-                      onChange={handleSubjectChange}
-                      className="w-full p-3 bg-transparent text-[#0099FF] border border-[#0099FF] rounded-lg focus:ring-2 focus:ring-[#0099FF] focus:border-none outline-none"
-                    >
-                      <option value="" disabled>Select Subject</option>
-                      {Object.keys(quizData.subjects).map((subjectName) => (
-                        <option key={subjectName} value={subjectName}>{subjectName}</option>
-                      ))}
-                    </select>
-                  </div>
+                  {mode === QuizMode.PAST_QUESTIONS && (
+                    <div className="space-y-4">
+                      <div>
+                        <label htmlFor="examType" className="block text-lg font-semibold mb-3 text-black">2. Choose an Exam Type</label>
+                        <select
+                          id="examType"
+                          value={selectedExamType}
+                          onChange={handleExamTypeChange}
+                          className="w-full p-3 bg-transparent text-[#0099FF] border border-[#0099FF] rounded-lg focus:ring-2 focus:ring-[#0099FF] focus:border-none outline-none"
+                        >
+                          <option value="" disabled>Select Exam Type</option>
+                          {quizData.examTypes.map((type) => (
+                            <option key={type} value={type}>{type}</option>
+                          ))}
+                        </select>
+                      </div>
 
-                  <div>
-                    <label htmlFor="year" className="block text-lg font-semibold mb-3 text-black">4. Choose a Year</label>
-                    <select
-                      id="year"
-                      value={selectedYear}
-                      onChange={handleYearChange}
-                      className="w-full p-3 bg-transparent text-[#0099FF] border border-[#0099FF] rounded-lg focus:ring-2 focus:ring-[#0099FF] focus:border-none outline-none"
-                    >
-                      <option value="" disabled>Select Year</option>
-                      {availableYears.length > 0 ? (
-                        availableYears.map((year) => (
-                          <option key={year} value={year}>{year}</option>
-                        ))
+                      <div>
+                        <label htmlFor="subject" className="block text-lg font-semibold mb-3 text-black">3. Choose a Subject</label>
+                        <select
+                          id="subject"
+                          value={selectedSubject}
+                          onChange={handleSubjectChange}
+                          className="w-full p-3 bg-transparent text-[#0099FF] border border-[#0099FF] rounded-lg focus:ring-2 focus:ring-[#0099FF] focus:border-none outline-none"
+                        >
+                          <option value="" disabled>Select Subject</option>
+                          {Object.keys(quizData.subjects).map((subjectName) => (
+                            <option key={subjectName} value={subjectName}>{subjectName}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <label htmlFor="year" className="block text-lg font-semibold mb-3 text-black">4. Choose a Year</label>
+                        <select
+                          id="year"
+                          value={selectedYear}
+                          onChange={handleYearChange}
+                          className="w-full p-3 bg-transparent text-[#0099FF] border border-[#0099FF] rounded-lg focus:ring-2 focus:ring-[#0099FF] focus:border-none outline-none"
+                        >
+                          <option value="" disabled>Select Year</option>
+                          {availableYears.length > 0 ? (
+                            availableYears.map((year) => (
+                              <option key={year} value={year}>{year}</option>
+                            ))
+                          ) : (
+                            <option value="" disabled>Select a subject first</option>
+                          )}
+                        </select>
+                      </div>
+                    </div>
+                  )}
+
+                  {mode === QuizMode.AI_GENERATED && (
+                    <div>
+                      <label htmlFor="topic" className="block text-lg font-semibold mb-3 text-black">2. Choose a Subject/Topic</label>
+                      {isLoading ? (
+                        <div className="w-full h-12 bg-gray-200 rounded-lg animate-pulse"></div>
                       ) : (
-                        <option value="" disabled>Select a subject first</option>
+                        <select
+                          id="topic"
+                          value={selectedTopic}
+                          onChange={(e) => setSelectedTopic(e.target.value)}
+                          className="w-full p-3 bg-transparent text-[#0099FF] border border-[#0099FF] rounded-lg focus:ring-2 focus:ring-[#0099FF] focus:border-none outline-none"
+                        >
+                          {topics.map(topic => (
+                            <option key={topic.id} value={topic.id}>{topic.name}</option>
+                          ))}
+                        </select>
                       )}
-                    </select>
+                      {!isLoading && topics.length === 0 && (
+                        <p className="mt-2 text-sm text-red-600">No topics available. Please check your API connection.</p>
+                      )}
+                    </div>
+                  )}
+
+                  {mode === QuizMode.PDF_UPLOAD && (
+                    <div>
+                      <label htmlFor="pdfUpload" className="block text-lg font-semibold mb-3 text-black">2. Upload your PDF</label>
+                      <input
+                        type="file"
+                        id="pdfUpload"
+                        accept=".pdf"
+                        onChange={handlePdfUpload}
+                        disabled={isUploadingPdf}
+                        className="w-full p-3 bg-transparent text-[#0099FF] border border-[#0099FF] rounded-lg focus:ring-2 focus:ring-[#0099FF] focus:border-none outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#0099FF] file:text-white hover:file:bg-[#0099FF]/80"
+                      />
+                      {isUploadingPdf && <p className="mt-2 text-sm text-gray-500">Uploading "{uploadedFileName}"...</p>}
+                      {!isUploadingPdf && uploadedFileName && pdfContentId && (
+                        <p className="mt-2 text-sm text-green-600">Successfully uploaded: "{uploadedFileName}". Ready to generate questions!</p>
+                      )}
+                      {!isUploadingPdf && uploadedFileName && !pdfContentId && (
+                        <p className="mt-2 text-sm text-red-600">Failed to process PDF: "{uploadedFileName}".</p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Number of Questions slider - now for all modes */}
+                  <div className={`${mode === QuizMode.PAST_QUESTIONS && "hidden"}`}>
+                    <label htmlFor="numQuestions" className="block text-lg font-semibold mb-3 text-black">Number of Questions: <span className="text-[#0099FF] font-bold">{numQuestions}</span></label>
+                    <input
+                      type="range"
+                      id="numQuestions"
+                      min="5"
+                      max="20"
+                      step="5"
+                      value={numQuestions}
+                      onChange={(e) => setNumQuestions(parseInt(e.target.value, 10))}
+                      className="w-full h-2 bg-gray-400 rounded-lg appearance-none cursor-pointer accent-[#0099FF]"
+                    />
                   </div>
-                </div>
-              )}
 
-              {mode === QuizMode.AI_GENERATED && (
-                <div>
-                  <label htmlFor="topic" className="block text-lg font-semibold mb-3 text-black">2. Choose a Subject/Topic</label>
-                  {isLoading ? (
-                    <div className="w-full h-12 bg-gray-200 rounded-lg animate-pulse"></div>
-                  ) : (
-                    <select
-                      id="topic"
-                      value={selectedTopic}
-                      onChange={(e) => setSelectedTopic(e.target.value)}
-                      className="w-full p-3 bg-transparent text-[#0099FF] border border-[#0099FF] rounded-lg focus:ring-2 focus:ring-[#0099FF] focus:border-none outline-none"
-                    >
-                      {topics.map(topic => (
-                        <option key={topic.id} value={topic.id}>{topic.name}</option>
-                      ))}
-                    </select>
-                  )}
-                  {!isLoading && topics.length === 0 && (
-                    <p className="mt-2 text-sm text-red-600">No topics available. Please check your API connection.</p>
-                  )}
-                </div>
-              )}
+                  <Button
+                    type="submit"
+                    className="w-full !py-4 text-lg"
+                    disabled={
+                      isLoading ||
+                      isUploadingPdf ||
+                      (mode === QuizMode.PDF_UPLOAD && !pdfContentId) || // Must have PDF uploaded for PDF mode
+                      (mode === QuizMode.PAST_QUESTIONS && (!selectedExamType || !selectedSubject || !selectedYear)) || // Must have selections for Past Questions
+                      (mode === QuizMode.AI_GENERATED && !selectedTopic) // Must have a topic for AI Generated
+                    }
+                  >
+                    Start Quiz
+                  </Button>
+                </form>
+              </Card>
+            </FadeInFromBottom>
+          </div>
+        </div>
 
-              {mode === QuizMode.PDF_UPLOAD && (
-                <div>
-                  <label htmlFor="pdfUpload" className="block text-lg font-semibold mb-3 text-black">2. Upload your PDF</label>
-                  <input
-                    type="file"
-                    id="pdfUpload"
-                    accept=".pdf"
-                    onChange={handlePdfUpload}
-                    disabled={isUploadingPdf}
-                    className="w-full p-3 bg-transparent text-[#0099FF] border border-[#0099FF] rounded-lg focus:ring-2 focus:ring-[#0099FF] focus:border-none outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#0099FF] file:text-white hover:file:bg-[#0099FF]/80"
-                  />
-                  {isUploadingPdf && <p className="mt-2 text-sm text-gray-500">Uploading "{uploadedFileName}"...</p>}
-                  {!isUploadingPdf && uploadedFileName && pdfContentId && (
-                    <p className="mt-2 text-sm text-green-600">Successfully uploaded: "{uploadedFileName}". Ready to generate questions!</p>
-                  )}
-                  {!isUploadingPdf && uploadedFileName && !pdfContentId && (
-                    <p className="mt-2 text-sm text-red-600">Failed to process PDF: "{uploadedFileName}".</p>
-                  )}
-                </div>
-              )}
-
-              {/* Number of Questions slider - now for all modes */}
-              <div className={`${mode === QuizMode.PAST_QUESTIONS && "hidden"}`}>
-                <label htmlFor="numQuestions" className="block text-lg font-semibold mb-3 text-black">Number of Questions: <span className="text-[#0099FF] font-bold">{numQuestions}</span></label>
-                <input
-                  type="range"
-                  id="numQuestions"
-                  min="5"
-                  max="20"
-                  step="5"
-                  value={numQuestions}
-                  onChange={(e) => setNumQuestions(parseInt(e.target.value, 10))}
-                  className="w-full h-2 bg-gray-400 rounded-lg appearance-none cursor-pointer accent-[#0099FF]"
-                />
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full !py-4 text-lg"
-                disabled={
-                  isLoading ||
-                  isUploadingPdf ||
-                  (mode === QuizMode.PDF_UPLOAD && !pdfContentId) || // Must have PDF uploaded for PDF mode
-                  (mode === QuizMode.PAST_QUESTIONS && (!selectedExamType || !selectedSubject || !selectedYear)) || // Must have selections for Past Questions
-                  (mode === QuizMode.AI_GENERATED && !selectedTopic) // Must have a topic for AI Generated
-                }
-              >
-                Start Quiz
-              </Button>
-            </form>
-          </Card>
-        </FadeInFromBottom>
+        <div className=' w-[95%] lg:w-[20%] h-[30vh] lg:h-[80vh] bg-red-500 max-sm:mb-[20px]' style={{ backgroundImage: `url(${images[index]})` }}></div>
       </div>
     </div>
   );

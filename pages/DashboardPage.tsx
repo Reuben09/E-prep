@@ -316,6 +316,24 @@ const DashboardPage = () => {
     navigate('/quiz'); // Use navigate to go to the quiz page
   };
 
+  const images = [
+    "/img1.jpg",
+    "/img2.jpg",
+    "/img3.jpg",
+    "/img4.jpg",
+    "/img5.jpg"
+  ];
+
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 10000); // Change every 3 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className=' bg-slate-100 w-[100vw] overflow-x-hidden'>
       <Sidebar screen={"dashboard"} />
@@ -363,39 +381,40 @@ const DashboardPage = () => {
               </div>
             </FadeInFromLeft>
 
-            <Card className="p-6 w-full bg-white">
-              <h3 className="text-[18px] font-bold mb-4 text-black border-b border-b-slate-400 pb-[10px]">Upcoming Exams</h3>
-              <ul className="space-y-4 h-[15vh] overflow-y-scroll">
-                {
-                  prevQuiz.map((quiz, index) => {
-                    const date = new Date(quiz.created_at);
+            <FadeInFromBottom>
+              <Card className="p-6 w-full bg-white">
+                <h3 className="text-[18px] font-bold mb-4 text-black border-b border-b-slate-400 pb-[10px]">Upcoming Exams</h3>
+                <ul className="space-y-4 h-[15vh] overflow-y-scroll">
+                  {
+                    prevQuiz.map((quiz, index) => {
+                      const date = new Date(quiz.created_at);
 
-                    // Format hours and minutes
-                    const hours = String(date.getHours()).padStart(2, "0");
-                    const minutes = String(date.getMinutes()).padStart(2, "0");
+                      // Format hours and minutes
+                      const hours = String(date.getHours()).padStart(2, "0");
+                      const minutes = String(date.getMinutes()).padStart(2, "0");
 
-                    // Format day, month, year
-                    const day = String(date.getDate()).padStart(2, "0");
-                    const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-indexed
-                    const year = date.getFullYear();
+                      // Format day, month, year
+                      const day = String(date.getDate()).padStart(2, "0");
+                      const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-indexed
+                      const year = date.getFullYear();
 
-                    const formattedDate = `${hours}:${minutes} ${day}-${month}-${year}`;
+                      const formattedDate = `${hours}:${minutes} ${day}-${month}-${year}`;
 
-                    return (
-                      <li key={index} className="flex justify-between items-center bg-transparent rounded-lg">
-                        <div>
-                          <p className="font-semibold text-black">{quiz.subject}</p>
-                          {/* <p className="text-sm text-gray-400">Completed at {formattedDate}</p> */}
-                        </div>
-                        <div className="text-right">
-                          {/* <p className={`font-bold text-green-400 ${quiz.score <= 30 ? "text-red-500" : quiz.score <= 60 ? "text-amber-500" : quiz.score > 60 && "text-green-500"}`}>Score: {quiz.score}%</p> */}
-                          <p className=' text-black'>Nov 29</p>
-                        </div>
-                      </li>
-                    )
-                  })
-                }
-                {/* <li className="flex justify-between items-center p-4 bg-transparent rounded-lg">
+                      return (
+                        <li key={index} className="flex justify-between items-center bg-transparent rounded-lg">
+                          <div>
+                            <p className="font-semibold text-black">{quiz.subject}</p>
+                            {/* <p className="text-sm text-gray-400">Completed at {formattedDate}</p> */}
+                          </div>
+                          <div className="text-right">
+                            {/* <p className={`font-bold text-green-400 ${quiz.score <= 30 ? "text-red-500" : quiz.score <= 60 ? "text-amber-500" : quiz.score > 60 && "text-green-500"}`}>Score: {quiz.score}%</p> */}
+                            <p className=' text-black'>Nov 29</p>
+                          </div>
+                        </li>
+                      )
+                    })
+                  }
+                  {/* <li className="flex justify-between items-center p-4 bg-transparent rounded-lg">
                       <div>
                         <p className="font-semibold text-black">Quiz: Photosynthesis</p>
                         <p className="text-sm text-gray-400">Completed 2 hours ago</p>
@@ -413,16 +432,19 @@ const DashboardPage = () => {
                         <p className="font-bold text-yellow-400">Score: 60%</p>
                       </div>
                     </li> */}
-              </ul>
-            </Card>
+                </ul>
+              </Card>
+            </FadeInFromBottom>
           </div>
 
           <div className=' w-[95%] lg:w-[57%]'>
-            <div className="grid md:grid-cols-3 gap-6 mb-[10px]">
-              <StatCard value={stats?.streak} label="Day Streak" icon="🔥" />
-              <StatCard value={stats?.averageScore} label="Avg. Score" icon="🎯" />
-              <StatCard value={stats?.badges?.length} label="Badges Earned" icon="🏆" />
-            </div>
+            <FadeInFromLeft>
+              <div className="grid md:grid-cols-3 gap-6 mb-[10px]">
+                <StatCard value={stats?.streak} label="Day Streak" icon="🔥" />
+                <StatCard value={stats?.averageScore} label="Avg. Score" icon="🎯" />
+                <StatCard value={stats?.badges?.length} label="Badges Earned" icon="🏆" />
+              </div>
+            </FadeInFromLeft>
             <FadeInFromBottom>
               <div className=' w-full flex items-start justify-center bg-white rounded-2xl'>
                 <Card className="p-6 w-full bg-transparent">
@@ -482,13 +504,18 @@ const DashboardPage = () => {
 
         </div>
 
+        {/* <div className={` w-full h-[30vh] bg-blue-400 flex items-center justify-center text-black`} style={{ backgroundImage: `url(${images[index]})` }}>
+          <h1>AD PLACEMENT</h1>
+        </div> */}
 
         <div className='w-full flex flex-col lg:flex-row items-center lg:items-start justify-start lg:justify-between lg:px-[20px]'>
-          <div className=' lg:w-[70%] w-[100%] rounded-md flex flex-col lg:flex-row items-center justify-center bg-white p-[10px]'>
+          <div className=' w-[100%] rounded-md flex flex-col items-center justify-center bg-white p-[10px]'>
+            <h1 className=' w-full text-left text-[20px] text-black font-semibold'>Progress Chart</h1>
+            <p className=' w-full text-left text-black/70'>Track your progress so far 💪🏾</p>
             <LineChart dataPoints={prevScores} />
           </div>
 
-          <div className=' w-[95%] lg:w-[28%]'>
+          {/* <div className=' w-[95%] lg:w-[28%]'>
             <h1 className=' text-[18px] text-black font-semibold'>Your Calendar</h1>
             <FadeInFromLeft>
               <Calendar
@@ -500,7 +527,7 @@ const DashboardPage = () => {
                 ]}
               />
             </FadeInFromLeft>
-          </div>
+          </div> */}
         </div>
 
         {/* <div>
