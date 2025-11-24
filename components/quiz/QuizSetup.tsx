@@ -751,9 +751,9 @@ const QuizSetup: React.FC<QuizSetupProps> = ({ onStartQuiz }) => {
                     <input
                       type="range"
                       id="numQuestions"
-                      min="5"
+                      min="1"
                       max="20"
-                      step="5"
+                      step="1"
                       value={numQuestions}
                       onChange={(e) => setNumQuestions(parseInt(e.target.value, 10))}
                       className="w-full h-2 bg-gray-400 rounded-lg appearance-none cursor-pointer accent-[#0099FF]"
