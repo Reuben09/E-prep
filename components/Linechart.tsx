@@ -192,7 +192,7 @@ const LineChart = ({ dataPoints }) => {
         <div
             className="
                 w-[95vw]
-                lg:w-[50vw]
+                lg:w-full
                 h-[350px]
                 mx-auto
                 flex items-center justify-center

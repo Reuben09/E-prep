@@ -7,7 +7,7 @@ import QuizRoundedIcon from '@mui/icons-material/QuizRounded';
 import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { motion } from "framer-motion";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
 // import Logo from "../assets/Eprep.png"
 
@@ -24,57 +24,85 @@ const Sidebar = ({ screen }) => {
         setIsOpen(!isOpen);
     };
 
+    const images = [
+        "/img1.jpg",
+        "/img2.jpg",
+        "/img3.jpg",
+        "/img4.jpg",
+        "/img5.jpg"
+      ];
+
+      const [index, setIndex] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setIndex((prevIndex) => (prevIndex + 1) % images.length);
+        }, 10000); // Change every 3 seconds
+    
+        return () => clearInterval(interval);
+      }, []);
+
     return (
         <>
-            <div className=' max-sm:hidden w-[15vw] h-[100vh] fixed z-[100] bg-white py-[10px] border-r border-r-slate-300 flex-col items-center justify-between flex'>
-                <div className=' w-full'>
-                    <div className=' flex items-center justify-center text-3xl font-bold text-black border-b-slate-300 border-b py-2 w-full mb-[10px]'>
-                        <img src="../assets/Eprep.png" alt=""  className='h-[80px]'/>
+            <div>
+                <div className=' max-sm:hidden w-[15vw] h-[100vh] fixed z-[100] bg-white py-[10px] border-r border-r-slate-300 flex-col items-center justify-between flex'>
+                    <div className=' w-full'>
+                        <div className=' flex items-center justify-center text-3xl font-bold text-black border-b-slate-300 border-b py-2 w-full mb-[10px]'>
+                            <img src="../assets/Eprep.png" alt="" className='h-[80px]' />
                         </div>
 
-                    <div className=' w-full px-[2.5%]'>
-                        <Link
-                            to={"/"}
-                            className=' mb-[10px] block'
-                        >
-                            <div className={`${screen === "dashboard" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><HomeRoundedIcon className=' mr-[5px]' />Dashboard</div>
-                        </Link>
+                        <div className=' w-full px-[2.5%]'>
+                            <Link
+                                to={"/"}
+                                className=' mb-[10px] block'
+                            >
+                                <div className={`${screen === "dashboard" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><HomeRoundedIcon className=' mr-[5px]' />Dashboard</div>
+                            </Link>
 
-                        <Link
-                            to={"/quiz"}
-                            className=' mb-[10px] block'
-                        >
-                            <div className={`${screen === "quiz" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><QuizRoundedIcon className=' mr-[5px]' />Quizzes</div>
-                        </Link>
+                            <Link
+                                to={"/quiz"}
+                                className=' mb-[10px] block'
+                            >
+                                <div className={`${screen === "quiz" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><QuizRoundedIcon className=' mr-[5px]' />Quizzes</div>
+                            </Link>
 
-                        <Link
-                            to={"/settings"}
-                            className=' mb-[10px] block'
-                        >
-                            <div className={`${screen === "settings" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><SettingsIcon className=' mr-[5px]' />Settings</div>
-                        </Link>
+                            <Link
+                                to={"/settings"}
+                                className=' mb-[10px] block'
+                            >
+                                <div className={`${screen === "settings" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><SettingsIcon className=' mr-[5px]' />Settings</div>
+                            </Link>
 
-                        {/* <Link
+                            {/* <Link
                             to={""}
                             className=' mb-[10px] block'
                         >
                             <div className={`${screen === "progress" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><BarChartRoundedIcon className=' mr-[5px]' />Progress</div>
                         </Link> */}
 
-                        <a
-                            href={"/chatbot/index.html"}
-                            className=' mb-[10px] block'
-                        >
-                            <div className={`${screen === "chatbot" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><AutoAwesomeIcon className=' mr-[5px]' />AI Tutor</div>
-                        </a>
+                            <a
+                                href={"/chatbot/index.html"}
+                                className=' mb-[10px] block'
+                            >
+                                <div className={`${screen === "chatbot" ? " bg-[#0099FF]/20 text-[#0099FF]" : " text-slate-500 hover:bg-[#0099FF]/20 hover:text-[#0099FF] transition-all duration-500"} font-semibold h-fit w-full flex items-center justify-start px-[5%] py-[10px] rounded-md`}><AutoAwesomeIcon className=' mr-[5px]' />AI Tutor</div>
+                            </a>
+                        </div>
+                    </div>
+                    <button onClick={handleLogout} className=' flex items-center justify-start text-slate-400 px-[10px] text-md text-black border-t-slate-300 border-t py-2 w-full'><LogoutIcon fontSize='small' className=' text-slate-400 mr-[5px]' /> Logout</button>
+                </div>
+
+                <div className=' max-sm:hidden w-[100vw] h-[50px] fixed bottom-0 z-[80] bg-transparent flex items-center justify-end'>
+                    <div className=' w-[85vw] h-[50px] bg-transparent flex flex-col items-end justify-end'>
+                        <div className={` w-full h-[50px] bg-blue-400 flex items-center justify-center text-black`} style={{ backgroundImage: `url(${images[index]})` }}>
+                            {/* <h1>AD PLACEMENT</h1> */}
+                        </div>
                     </div>
                 </div>
-                <button onClick={handleLogout} className=' flex items-center justify-start text-slate-400 px-[10px] text-md text-black border-t-slate-300 border-t py-2 w-full'><LogoutIcon fontSize='small' className=' text-slate-400 mr-[5px]' /> Logout</button>
             </div>
 
             <div className=' lg:hidden fixed z-[48] w-screen h-[80px] text-[#000033] bg-white backdrop-blur-xl flex items-center justify-between'>
                 <div className=' flex items-center justify-center text-3xl font-bold text-black py-2 w-fit'>
-                <img src="../assets/Eprep.png" alt=""  className='h-[80px]'/></div>
+                    <img src="../assets/Eprep.png" alt="" className='h-[80px]' /></div>
 
                 <div>
                     <button
