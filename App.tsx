@@ -1,4 +1,5 @@
 import React from 'react';
+import './App.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AuthPage from './pages/LoginPage'; // Assuming LoginPage is now AuthPage
 import DashboardPage from './pages/DashboardPage';
@@ -6,6 +7,7 @@ import QuizFlowPage from './pages/QuizFlowPage';
 import { AuthProvider, useAuth } from './contexts/AuthContext'; // Import useAuth
 import { Toaster } from 'sonner'; // For displaying toasts globally
 import SettingsPage from './pages/SettingsPage';
+import LandingPage from './pages/LandingPage';
 
 // A simple PrivateRoute component to protect authenticated routes
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -50,6 +52,20 @@ const AppContent: React.FC = () => {
       <Routes>
         {/* Public route for authentication */}
         <Route path="/auth" element={<AuthPage />} />
+
+        <Route
+          path='/'
+          element={
+            <LandingPage />
+          }
+        />
+
+        <Route
+          path='/landingPage'
+          element={
+            <LandingPage />
+          }
+        />
 
         {/* Protected routes */}
         <Route

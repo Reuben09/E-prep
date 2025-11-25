@@ -116,7 +116,7 @@ const AuthPage: React.FC = () => {
             <SchoolOutlinedIcon fontSize='large' className="mx-auto h-[40px] w-[40px] text-white" />
           </div>
           <h2 className="mt-4 text-3xl font-bold bg-clip-text text-black">
-            Eprep
+            PrepLab
           </h2>
           {/* <p className="mt-2 text-gray-400">Sign in or create an account to continue your journey</p> */}
         </div>

@@ -9,7 +9,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { motion } from "framer-motion";
 import { useEffect, useState } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
-// import Logo from "../assets/Eprep.png"
+// import Logo from "../assets/PrepLab.png"
 
 const Sidebar = ({ screen }) => {
     const { user, signOut } = useAuth(); // Get user and signOut from AuthContext
@@ -48,7 +48,7 @@ const Sidebar = ({ screen }) => {
                 <div className=' max-sm:hidden w-[15vw] h-[100vh] fixed z-[100] bg-white py-[10px] border-r border-r-slate-300 flex-col items-center justify-between flex'>
                     <div className=' w-full'>
                         <div className=' flex items-center justify-center text-3xl font-bold text-black border-b-slate-300 border-b py-2 w-full mb-[10px]'>
-                            <img src="../assets/Eprep.png" alt="" className='h-[80px]' />
+                            <img src="../assets/PrepLab.png" alt="" className='h-[80px]' />
                         </div>
 
                         <div className=' w-full px-[2.5%]'>
@@ -102,7 +102,7 @@ const Sidebar = ({ screen }) => {
 
             <div className=' lg:hidden fixed z-[48] w-screen h-[80px] text-[#000033] bg-white backdrop-blur-xl flex items-center justify-between'>
                 <div className=' flex items-center justify-center text-3xl font-bold text-black py-2 w-fit'>
-                    <img src="../assets/Eprep.png" alt="" className='h-[80px]' /></div>
+                    <img src="../assets/PrepLab.png" alt="" className='h-[80px]' /></div>
 
                 <div>
                     <button
