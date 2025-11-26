@@ -5,7 +5,6 @@ import QuizSetup from '../components/quiz/QuizSetup';
 import QuizPlayer from '../components/quiz/QuizPlayer';
 import QuizResults from '../components/quiz/QuizResults';
 import { Quiz, QuizSettings, UserAnswer, QuizResult, QuizMode, Question } from '../types';
-// Removed fetchPastQuestions as it's replaced by fetchAlocQuestions
 import { transformQuestions } from '@/helper/transformQuestions';
 // Updated to import both AI generation functions
 import { generateQuizQuestionsFromPdf, generateQuizQuestionsFromTopic } from '../services/geminiService'; // Assuming you put both functions here
@@ -41,7 +40,7 @@ const QuizFlowPage: React.FC<QuizFlowPageProps> = ({ onBackToDashboard }) => {
               const fetchedQuestions = await fetchAlocQuestions({
           subject: settings.selectedSubject,
           year: parseInt(settings.selectedYear, 10),
-          type: settings.selectedExamType.toLowerCase()
+          type: settings.selectedExamType
         });
         console.log(fetchedQuestions, 'fetchedQuestions');
   const transformed = transformQuestions(fetchedQuestions);

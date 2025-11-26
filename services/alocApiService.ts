@@ -24,9 +24,6 @@ export interface AlocApiResponse {
   data: AlocQuestion[]; // Array of questions
 }
 
-const ALOC_API_BASE_URL = 'https://questions.aloc.com.ng/api/v2/m';
-const ALOC_API_KEY = 'QB-5f3d57acbc595977e966'; // Replace with your actual API key
-
 interface FetchQuestionsParams {
   subject: string;
   year: number; // Assuming year is a number
@@ -39,29 +36,22 @@ export async function fetchAlocQuestions({
   year, 
   type 
 }: FetchQuestionsParams): Promise<AlocQuestion[]> {
-  const url = new URL(ALOC_API_BASE_URL);
-  url.searchParams.append('subject', subject);
-  url.searchParams.append('year', year.toString());
-  url.searchParams.append('type', type);
-
+  const url = `https://past-questions-api.onrender.com/api/questions?examYear=${year}&examType=${type}&subject=${subject}`
   try {
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'AccessToken': ALOC_API_KEY, // Use 'AccessToken' for the API key header
       },
     });
 
-    if (!response.ok) {
-      // Attempt to read error message from response body
-      const errorBody = await response.json().catch(() => ({ message: response.statusText }));
-      throw new Error(`API request failed: ${response.status} - ${errorBody.message || response.statusText}`);
+    if (!response) {
+      throw new Error(`Network response was not ok: ${response}`);
     }
 
     const result: AlocApiResponse = await response.json();
     console.log(result)
-    if (result.status === 200) {
+    if (result) {
       return result;
     } else {
       throw new Error(`API returned an error: ${result.message}`);
