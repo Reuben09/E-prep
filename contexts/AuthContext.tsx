@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signOut = async () => {
     await supabase.auth.signOut();
     toast.info("Signed out successfully");
-    navigate('/');
+    navigate('/landingPage');
   };
 
   return (
