@@ -95,7 +95,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ quiz, result, onRestart, onNe
             </Card>
                  <div className="grid md:grid-cols-2 gap-6">
         {/* Analysis Card */}
-        {/* <ResultCard title="AI Performance Analysis" icon={<ChartBarIcon className="w-7 h-7 text-brand-secondary"/>}>
+        <ResultCard title="Performance Analysis" icon={<ChartBarIcon className="w-7 h-7 text-brand-secondary"/>}>
           {isLoadingAnalysis && <div className="flex justify-center items-center h-40"><Spinner /></div>}
           {error && <p className="text-red-400">{error}</p>}
           {resultAnalysis && (
@@ -111,10 +111,10 @@ const QuizResults: React.FC<QuizResultsProps> = ({ quiz, result, onRestart, onNe
               )}
             </div>
           )}
-        </ResultCard> */}
+        </ResultCard>
 
         {/* Recommendations Card */}
-        {/* <ResultCard title="Study Recommendations" icon={<SparklesIcon className="w-7 h-7 text-brand-accent"/>}>
+        <ResultCard title="Study Recommendations" icon={<SparklesIcon className="w-7 h-7 text-brand-accent"/>}>
           {isLoadingAnalysis && <div className="flex justify-center items-center h-40"><Spinner /></div>}
           {error && <p className="text-red-400">Could not load recommendations.</p>}
           {recommendations && (
@@ -141,7 +141,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({ quiz, result, onRestart, onNe
                )}
              </div>
           )}
-        </ResultCard> */}
+        </ResultCard>
       </div>
 
             <Card className="p-6 bg-white text-black">

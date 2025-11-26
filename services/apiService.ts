@@ -187,3 +187,29 @@ export const fetchPastQuestions = async (subject: string, year: string, type: st
     throw new Error('Could not fetch past questions. Please check your network and try again.');
   }
 };
+
+export const fetchQuizData = async (setQuizData) => {
+  try {
+    const response = await axios.get<ApiResponse>(`http://localhost:5000/api/questions/subjects-years`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.statusText === 'OK') {
+      console.log(response);
+      setQuizData(response.data);
+    } else {
+      console.error('API Error:', response);
+      throw new Error(response.data.message || 'Failed to fetch past questions.');
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+        console.error('Axios error fetching past questions:', error.message);
+    } else {
+        console.error('Unknown error fetching past questions:', error);
+    }
+    throw new Error('Could not fetch past questions. Please check your network and try again.');
+  }
+};
