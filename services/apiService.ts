@@ -190,14 +190,14 @@ export const fetchPastQuestions = async (subject: string, year: string, type: st
 
 export const fetchQuizData = async (setQuizData) => {
   try {
-    const response = await axios.get<ApiResponse>(`http://localhost:5000/api/questions/subjects-years`, {
+    const response = await axios.get<ApiResponse>(`https://past-questions-api.onrender.com/api/questions/subjects-years`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
     });
 
-    if (response.statusText === 'OK') {
+    if (response.status === 200) {
       console.log(response);
       setQuizData(response.data);
     } else {
